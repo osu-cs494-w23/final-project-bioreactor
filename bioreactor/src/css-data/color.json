@@ -4,8 +4,8 @@
   "warning": "#C63434",
   "button": "#002838",
   "selectbutton": "#98E58E",
-  "main-text": "#273333",
-  "pretty-gray": "#F3F4F4",
-  "sub-text": "#364141",
+  "maintext": "#273333",
+  "prettygray": "#F3F4F4",
+  "subtext": "#364141",
   "border": "#DEE1E1"
 }
