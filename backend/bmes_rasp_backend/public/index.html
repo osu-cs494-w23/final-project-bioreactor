@@ -1,0 +1,17 @@
+<html>
+
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascripts/index.js"></script>
+</head>
+
+<body>
+  <input type="range" min="0" max="1000" value="0" class="slider" id="motorSpeed" oninput="submitMotorSpeed()"
+  style="width: 1000px">
+  <p id="currentMotorValue">Current motor value: 0</p>
+  <button id="toggleBtn" onclick="changeValve()">Open Valve</button>
+</body>
+
+</html>
