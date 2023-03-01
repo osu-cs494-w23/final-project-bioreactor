@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 export function useSocket(setDeviceStatus, timeout) {
     const [socket, setSocket] = useState(null);
-    const serverUrl = "http://localhost:7579"
+    const serverUrl = "http://localhost:7527"
 
     useEffect(() => {
         const newSocket = io(serverUrl,

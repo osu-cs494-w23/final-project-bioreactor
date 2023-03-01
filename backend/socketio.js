@@ -7,8 +7,8 @@ const {Valve} = require("./valveWrapper");
 let debugOnStartup = true
 
 let devices = {
-    "motor1": new Motor('GPIO21', "motor1", debugOnStartup),
-    "valve1": new Valve('GPIO16', "valve1", debugOnStartup)
+    "motor1": new Motor('GPIO21', "motor1","Jar 1", debugOnStartup),
+    "valve1": new Valve('GPIO16', "valve1","Jar 1", debugOnStartup)
 }
 
 

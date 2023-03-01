@@ -14,8 +14,8 @@ const StyledButton = styled.button`
   border: none;
 `;
 
-function Button({ children, ...rest }) {
-  return <StyledButton {...rest}>{children}</StyledButton>;
+function Button({children, ...rest}) {
+    return <StyledButton {...rest}>{children}</StyledButton>;
 }
 
 export default Button;

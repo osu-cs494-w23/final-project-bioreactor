@@ -1,11 +1,12 @@
 
 
 class Motor{
-    constructor(pin, name, debug) {
+    constructor(pin, name, jarName, debug) {
         this.pinCode = pin
         this.speed = 0
         this.debug = debug
         this.name = name
+        this.jarName = jarName
 
         if(debug === false) {
             const raspi = require('raspi');
@@ -29,6 +30,7 @@ class Motor{
             "speed": this.speed,
             "debug": this.debug,
             "name": this.name,
+            "jarName": this.jarName,
             "type": "motor"
         }
     }

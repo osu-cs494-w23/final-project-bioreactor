@@ -1,11 +1,12 @@
 
 
 class Valve {
-    constructor(pin, name, debug) {
+    constructor(pin, name, jarName, debug) {
         this.pinCode = pin
         this.opened = false
         this.debug = debug
         this.name = name
+        this.jarName = jarName
 
         if (debug === false) {
             const raspi = require('raspi');
@@ -41,6 +42,7 @@ class Valve {
             "state": this.opened,
             "debug": this.debug,
             "name": this.name,
+            "jarName": this.jarName,
             "type": "valve"
         }
     }
