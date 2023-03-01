@@ -1,0 +1,13 @@
+.jar {
+  background-color: transparent;
+  border: 1px solid #dee1e1;
+  height: 35em;
+  width: 22em;
+  border-radius: 1rem;
+  display: inline-block;
+  margin: 4em 2em;
+}
+
+.jar button {
+  margin: 0 auto;
+}
