@@ -1,0 +1,19 @@
+{
+  "name": "final-project-bioreactor",
+  "version": "1.0.0",
+  "description": "[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=10289234&assignment_repo_type=AssignmentRepo)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ImgyeongLee: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@github.com/osu-cs494-w23/final-project-bioreactor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/osu-cs494-w23/final-project-bioreactor/issues"
+  },
+  "homepage": "https://github.com/osu-cs494-w23/final-project-bioreactor#readme"
+}

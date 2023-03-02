@@ -1,0 +1,11 @@
+{
+  "loading": "#FFBC00",
+  "success": "#59CB59",
+  "warning": "#C63434",
+  "button": "#002838",
+  "selectbutton": "#98E58E",
+  "maintext": "#273333",
+  "prettygray": "#F3F4F4",
+  "subtext": "#364141",
+  "border": "#DEE1E1"
+}
