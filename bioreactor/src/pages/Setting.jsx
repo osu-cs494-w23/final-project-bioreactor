@@ -1,7 +1,12 @@
 import React from "react";
 
 const Setting = () => {
-    return <div>This page is for setting</div>;
+  return (
+    <div>
+      <div>This page is for settings</div>
+      <div>Dark mode lmao</div>
+    </div>
+  );
 };
 
 export default Setting;

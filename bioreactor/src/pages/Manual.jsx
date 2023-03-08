@@ -3,11 +3,12 @@ import EmptyJar from "../components/EmptyJar";
 import ProgressJar from "../components/ProgressJar";
 import color from "../data/color.json";
 
-const Main = () => {
+const Manual = () => {
   const [onRecipe, setOnRecipe] = useState(false);
 
   return (
     <>
+      <div className="manual-mode-notification">You are on manual mode.</div>
       {!onRecipe && (
         <>
           <EmptyJar />
@@ -34,4 +35,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Manual;

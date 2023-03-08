@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/osu-cs494-w23/final-project-bioreactor/issues"
   },
-  "homepage": "https://github.com/osu-cs494-w23/final-project-bioreactor#readme"
+  "homepage": "https://github.com/osu-cs494-w23/final-project-bioreactor#readme",
+  "dependencies": {
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.12"
+  }
 }

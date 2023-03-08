@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import color from "../css-data/color.json";
+import color from "../data/color.json";
 
 const StyledButton = styled.button`
   background: ${color.selectbutton};
@@ -12,10 +12,18 @@ const StyledButton = styled.button`
   font-size: 16px;
   font-weight: bold;
   border: none;
+  transition-duration: 0.3s;
+  &:hover {
+    background-color: #026661;
+    color: white;
+  }
+  &:active {
+    color: ${color.prettygray};
+  }
 `;
 
-function Button({children, ...rest}) {
-    return <StyledButton {...rest}>{children}</StyledButton>;
+function Button({ children, ...rest }) {
+  return <StyledButton {...rest}>{children}</StyledButton>;
 }
 
 export default Button;

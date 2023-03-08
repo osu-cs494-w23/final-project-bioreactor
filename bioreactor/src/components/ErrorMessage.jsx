@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import color from "../css-data/color.json";
+import color from "../data/color.json";
 
 const Message = styled.div`
   background: transparent;
@@ -16,13 +16,13 @@ const Error = styled.div`
   font-weight: bold;
 `;
 
-function ErrorMessage({children, ...rest}) {
-    return (
-        <Message {...rest}>
-            <Error>Something went wrong</Error>
-            {children}
-        </Message>
-    );
+function ErrorMessage({ children, ...rest }) {
+  return (
+    <Message {...rest}>
+      <Error>Something went wrong</Error>
+      {children}
+    </Message>
+  );
 }
 
 export default ErrorMessage;
