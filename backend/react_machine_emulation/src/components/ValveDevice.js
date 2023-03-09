@@ -11,7 +11,7 @@ function ValveDevice(props) {
           margin: 5px;
           padding: 5px;`}>
             <h4>{props.device.name}</h4>
-            <button onClick={props.handleValveToggle}>{props.device.state ? "Open valve" : "Close valve"}</button>
+            <button onClick={props.handleValveToggle}>{props.device.opened ? "Open valve" : "Close valve"}</button>
         </div>
     );
 }

@@ -1,0 +1,10 @@
+{
+  "name": "salty alcohol",
+  "time": 10000,
+  "motorSpeed": 500,
+  "temperature": 40,
+  "ingredients": {
+    "Isopropyl Alcohol": 50,
+    "Salt water": 25
+  }
+}

@@ -4,13 +4,10 @@ let io
 const {Motor} = require("./motorWrapper");
 const {Valve} = require("./valveWrapper");
 
+const machineSpecification = require("./machine_specification.json")
+const {machine, getAllStatuses} = require("./machine");
+
 let debugOnStartup = true
-
-let devices = {
-    "motor1": new Motor('GPIO21', "motor1","Jar 1", debugOnStartup),
-    "valve1": new Valve('GPIO16', "valve1","Jar 1", debugOnStartup)
-}
-
 
 function init(server) {
     console.log("server initializing")
@@ -22,23 +19,34 @@ function init(server) {
 
     io.on('connection', (socket) => {
         console.log("connection initialized by id: ", socket.id)
-        socket.on('getAllStatuses', (callback)=>{
-            let returningThingie = Object.fromEntries(Object.values(devices).map(device=>[device.name, device.allStats]))
+        socket.on('getMachineSpec', (callback) => {
+            checkCallback(callback, socket.id, "getMachineSpec")
+            callback({
+                "status": "ok",
+                "machineSpec": machineSpecification,
+            })
+        })
+        socket.on('getAllStatuses', (callback) => {
+            checkCallback(callback, socket.id, "getAllStatuses")
+            // let returningThingie = Object.fromEntries(Object.values(devices).map(device => [device.name, device.allStats]))
+            let returningThingie = getAllStatuses()
             callback({
                 "status": "ok",
                 "devices": returningThingie
             })
         })
-        socket.on('setMotorSpeed', (deviceName, newSpeed, callback) => {
+
+        socket.on('setMotorSpeed', (jarName, deviceName, newSpeed, callback) => {
             checkCallback(callback, socket.id, "setMotorSpeed")
-            if(devices[deviceName] === undefined){
+
+            if (devices[deviceName] === undefined) {
                 callback({
                     "status": "error",
                     "errorMessage": "device not found"
                 })
                 return
             }
-            if(!devices[deviceName] instanceof Motor){
+            if (!devices[deviceName] instanceof Motor) {
                 callback({
                     "status": "error",
                     "errorMessage": "device not a motor"
@@ -54,21 +62,21 @@ function init(server) {
         })
         socket.on('toggleValve', (deviceName, state, callback) => {
             checkCallback(callback, socket.id, "toggleValve")
-            if(devices[deviceName] === undefined){
+            if (devices[deviceName] === undefined) {
                 callback({
                     "status": "error",
                     "errorMessage": "device not found"
                 })
                 return
             }
-            if(!devices[deviceName] instanceof Valve){
+            if (!devices[deviceName] instanceof Valve) {
                 callback({
                     "status": "error",
                     "errorMessage": "device not a valve"
                 })
                 return
             }
-            if(state){
+            if (state) {
                 devices[deviceName].open()
             } else {
                 devices[deviceName].close()
@@ -79,16 +87,85 @@ function init(server) {
                 "state": state
             })
         })
+
+        socket.on('loadRecipe', (newRecipe, jarName, callback) => {
+            checkCallback(callback, socket.id, "loadRecipe")
+            if( !machine["finalJars"].has(jarName)){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Jar not found"
+                })
+                return
+            }
+
+            machine["finalJars"].get(jarName).recipe = newRecipe
+            callback({
+                "status": "ok"
+            })
+            console.log("machine with recipe loaded: ", machine)
+        })
+
+        socket.on('startRecipe', (jarName, callback) => {
+            checkCallback(callback, socket.id, "startRecipe")
+            if(!machine["finalJars"].has(jarName)){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Jar not found"
+                })
+                return
+            }
+            let currentJar = machine["finalJars"].get(jarName)
+            if(currentJar.recipe === null || currentJar.recipe === undefined){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Recipe not loaded"
+                })
+                return
+            }
+
+            currentJar.startRecipe()
+            callback({
+                "status": "ok"
+            })
+        })
+
+        socket.on('pauseRecipe', (jarName, callback) => {
+            checkCallback(callback, socket.id, "pauseRecipe")
+            if(!machine["finalJars"].has(jarName)){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Jar not found"
+                })
+                return
+            }
+            let currentJar = machine["finalJars"].get(jarName)
+            if(currentJar.recipe === null || currentJar.recipe === undefined){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Recipe not loaded"
+                })
+                return
+            }
+            if(currentJar.state !== "running"){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Recipe not running"
+                })
+            }
+            currentJar.pauseRecipe()
+            callback({
+                "status": "ok"
+            })
+        })
     })
 }
 
-function checkCallback(callback, socketID, functionName){
-    if(typeof callback !== 'function') {
+function checkCallback(callback, socketID, functionName) {
+    if (typeof callback !== 'function') {
         console.log(socketID + " triggered " + functionName + " without providing a callback")
         return (_) => {
         }
-    }
-    else return callback
+    } else return callback
 }
 
 module.exports = {
