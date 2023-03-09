@@ -1,0 +1,43 @@
+{
+  "debug": true,
+  "finalJars": {
+    "Jar 1": {
+      "impellerMotor": {
+        "pin": "GPIO21",
+        "name": "motor1"
+      },
+      "valves": [
+        {
+          "pin": "GPIO16",
+          "name": "valve1",
+          "startJar": 0
+        }
+      ],
+      "tempValve": {
+        "pin": "GPIO17"
+      },
+      "tempProbe": {
+        "pin": "GPIO16"
+      }
+    }
+  },
+  "startJars": [
+    {
+      "ingredient": "Isopropyl Alcohol",
+      "pumpMotor": {
+        "pin": "GPIO22"
+      },
+      "pumpRate": 5
+    },
+    {
+      "ingredient": "Salt water",
+      "pumpMotor": {
+        "pin": "GPIO23"
+      },
+      "pumpRate": 5
+    }
+  ],
+  "coolantMotor": {
+    "pin": "GPIO34"
+  }
+}

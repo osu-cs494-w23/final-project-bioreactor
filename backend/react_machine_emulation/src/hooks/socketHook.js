@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
 export function useSocket(setDeviceStatus, timeout) {
-  const [socket, setSocket] = useState(null);
-  const serverUrl = "http://localhost:6151";
+    const [socket, setSocket] = useState(null);
+    const serverUrl = "http://localhost:7527"
 
   useEffect(() => {
     const newSocket = io(serverUrl, {
@@ -24,9 +24,15 @@ export function useSocket(setDeviceStatus, timeout) {
         });
     }, timeout);
 
-    newSocket.on("connect", () => {
-      console.log("connected to server");
-    });
+        newSocket.on('connect', () => {
+            console.log("connected to server")
+            newSocket.emit('getAllStatuses', (data) => {
+                if(data["status"] === "ok"){
+                    setDeviceStatus(data["devices"])
+                    console.log("received machine status: ", data["devices"])
+                }
+            })
+        });
 
     newSocket.on("disconnect", () => {
       console.log("disconnected from server");

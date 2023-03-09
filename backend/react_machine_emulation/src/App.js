@@ -1,8 +1,7 @@
 import {useSocket} from "./hooks/socketHook";
 import {useState} from "react";
-import MotorDevice from "./components/MotorDevice";
-import ValveDevice from "./components/ValveDevice";
 import {css} from "@emotion/css";
+import FinalJar from "./components/FinalJar";
 
 function App() {
     let [deviceStatus, setDeviceStatus] = useState({})
@@ -42,26 +41,16 @@ function App() {
         })
     }
 
+    console.log("status: ", deviceStatus)
+    let finalJarComponents = null
+    if(deviceStatus["finalJars"])
+    finalJarComponents = deviceStatus["finalJars"].map(jar => <FinalJar jar={jar} socket={socket}/>)
+
     return (
         <div>
             sup lmao
             <div className={css`display: flex`}>
-                {Object.entries(deviceStatus).map(thisDevice => {
-                    let device = thisDevice[1]
-                    console.log("Looping through ", device)
-                    switch (device["type"]) {
-                        case "motor":
-                            return <MotorDevice device={device} handleSpeedChange={(newSpeed) => {
-                                handleSpeedChange(device.name, newSpeed)
-                            }}/>
-                        case "valve":
-                            return <ValveDevice device={device} handleValveToggle={() => {
-                                handleValveToggle(device.name)
-                            }}/>
-                        default:
-                            return <div>bruhhhhh</div>
-                    }
-                })}
+                {finalJarComponents}
             </div>
         </div>
     );
