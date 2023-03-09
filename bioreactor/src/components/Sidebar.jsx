@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import datas from "../data/sample.json";
 import { FaSearch } from "react-icons/fa";
 
-const Sidebar = () => {
+const Sidebar = ({ onClickHandler }) => {
   return (
     <div className="sidebar">
       <div className="bold list-header">Recipe List</div>
@@ -27,7 +27,9 @@ const Sidebar = () => {
           );
         })}
       </div>
-      <button className="add-button">+ Add Recipe</button>
+      <button className="add-button" onClick={onClickHandler}>
+        + Add Recipe
+      </button>
     </div>
   );
 };
