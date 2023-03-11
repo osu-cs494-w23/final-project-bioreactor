@@ -9,7 +9,7 @@ class Valve {
     gpio
     cancel
     state = "idle" //"running", "paused", "idle"
-    constructor(pin, name, jarName ,debug) {
+    constructor(pin, name, jarName, debug) {
         this.pinCode = pin
         this.opened = false
         this.debug = debug
@@ -29,19 +29,19 @@ class Valve {
 
     open() {
         this.opened = true
-        if(!this.debug)
+        if (!this.debug)
             this.pin.write(this.gpio.HIGH)
     }
 
     close() {
         this.opened = false
-        if(!this.debug)
+        if (!this.debug)
             this.pin.write(this.gpio.LOW)
     }
 
-    set state(newState){
+    set openState(newState) {
         this.opened = newState
-        if(!this.debug) {
+        if (!this.debug) {
             if (newState)
                 this.pin.write(this.gpio.HIGH)
             else
@@ -49,13 +49,13 @@ class Valve {
         }
     }
 
-    get state() {
-        if(this.debug)
+    get openState() {
+        if (this.debug)
             return this.opened
         return this.pin.value
     }
 
-    get allStats(){
+    get allStats() {
         return {
             "pin": this.pinCode,
             "opened": this.opened,
@@ -66,26 +66,28 @@ class Valve {
         }
     }
 
-    executeNextCommand(){ //start command queue execution
-        if(this.actionQueue[0] === undefined || this.actionQueue[0] === null)
+    executeNextCommand() { //start command queue execution
+        if (this.actionQueue[0] === undefined || this.actionQueue[0] === null) {
+            this.cancelCurrentQueue()
             return
+        }
 
-        while(this.actionQueue[0]["time"] < 1){
+        while (this.actionQueue[0]["time"] < 1) {
             this.actionQueue.shift()
         }
 
         this.state = "running"
         let currentCommand = this.actionQueue[0]
         currentCommand["startTime"] = new Date()
-        this.state(currentCommand["opened"])
+        this.openState = currentCommand["opened"]
         this.cancel = setTimeout(() => {
             this.actionQueue.shift()
             this.executeNextCommand()
         }, currentCommand["time"])
     }
 
-    pause(){
-        if(this.state !== "running")
+    pause() {
+        if (this.state !== "running")
             return
 
         let currentCommand = this.actionQueue[0]
@@ -94,10 +96,10 @@ class Valve {
         currentCommand["time"] = currentCommand["time"] - (new Date() - currentCommand["startTime"]) //reduce activation time for resuming
     }
 
-    cancelCurrentQueue(){ //cancel the action queue and stop the motor, making it impossible to resume
+    cancelCurrentQueue() { //cancel the action queue and stop the motor, making it impossible to resume
         this.actionQueue = []
         this.state = "idle"
-        this.state(false)
+        this.openState = false
     }
 }
 

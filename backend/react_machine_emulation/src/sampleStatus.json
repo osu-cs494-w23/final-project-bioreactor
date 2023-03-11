@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "devices": {
+  "machine": {
     "finalJars": [
       {
         "name": "Jar 1",

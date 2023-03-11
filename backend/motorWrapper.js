@@ -1,4 +1,4 @@
-class Motor{
+class Motor {
     cancel;
     // motor's actionQueue's structure:
     // {
@@ -9,6 +9,7 @@ class Motor{
     actionQueue = []
     state = "idle" //"running", "paused", "idle"
     speed = 0
+
     constructor(pin, name, jarName, debug) {
         this.pinCode = pin
         this.debug = debug
@@ -16,7 +17,7 @@ class Motor{
         this.jarName = jarName
 
 
-        if(!debug) {
+        if (!debug) {
             const raspi = require('raspi');
             const pwm = require('raspi-soft-pwm');
             raspi.init(() => {
@@ -26,13 +27,13 @@ class Motor{
         }
     }
 
-    set Speed(speed){
+    set Speed(speed) {
         this.speed = speed
-        if(!this.debug)
+        if (!this.debug)
             this.pin.write(speed)
     }
 
-    get allStats(){
+    get allStats() {
         return {
             "pin": this.pinCode,
             "speed": this.speed,
@@ -43,41 +44,43 @@ class Motor{
         }
     }
 
-    executeNextCommand(){ //execute next command in the actionQueue
-        if(this.actionQueue[0] === undefined || this.actionQueue[0] === null)
+    executeNextCommand() { //execute next command in the actionQueue
+        if (this.actionQueue[0] === undefined || this.actionQueue[0] === null) {
+            this.cancelCurrentQueue()
             return
+        }
 
-        while(this.actionQueue[0]["time"] < 1){
+        while (this.actionQueue[0]["time"] < 1) {
             this.actionQueue.shift()
         }
 
         this.state = "running"
         let currentCommand = this.actionQueue[0]
         currentCommand["startTime"] = new Date()
-        this.Speed(currentCommand["speed"])
+        this.Speed = currentCommand["speed"]
         this.cancel = setTimeout(() => {
             this.actionQueue.shift()
             this.executeNextCommand()
         }, currentCommand["time"])
     }
 
-    pause(){ //pause the current actionQueue
-        if(this.state !== "running")
+    pause() { //pause the current actionQueue
+        if (this.state !== "running")
             return
         let currentCommand = this.actionQueue[0]
         this.state = "paused"
         clearTimeout(this.cancel)
-        this.Speed(0)
+        this.Speed = 0
         currentCommand["time"] = currentCommand["time"] - (new Date() - currentCommand["startTime"]) //reduce activation time for resuming
     }
 
-    cancelCurrentQueue(){ //cancel the action queue and stop the motor, making it impossible to resume
+    cancelCurrentQueue() { //cancel the action queue and stop the motor, making it impossible to resume
         this.actionQueue = []
         this.state = "idle"
-        this.Speed(0)
+        this.Speed = 0
     }
 }
 
-module.exports={
+module.exports = {
     Motor: Motor,
 }

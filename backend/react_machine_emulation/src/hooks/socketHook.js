@@ -1,50 +1,61 @@
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import io from 'socket.io-client';
 
-export function useSocket(setDeviceStatus, timeout) {
+export function useSocket(timeout) {
     const [socket, setSocket] = useState(null);
-    const serverUrl = "http://localhost:7527"
+    const dispatch = useDispatch()
+    const serverUrl = "http://localhost:8120"
 
-  useEffect(() => {
-    const newSocket = io(serverUrl, {
-      cors: {
-        origin: serverUrl,
-        methods: ["GET", "POST"],
-      },
-    });
-    setSocket(newSocket);
+    useEffect(() => {
+        const newSocket = io(serverUrl,
+            {
+                cors: {
+                    origin: serverUrl,
+                    methods: ["GET", "POST"]
+                }
+            });
+        setSocket(newSocket);
 
-    let updateInterval = setInterval(() => {
-      if (newSocket !== null)
-        newSocket.emit("getAllStatuses", (data) => {
-          if (data["status"] === "ok") {
-            console.log("received statuses: ", data);
-            setDeviceStatus(data["devices"]);
-          }
-        });
-    }, timeout);
+        let updateInterval = setInterval(() => {
+            if (newSocket !== null) {
+
+                newSocket.emit("getAllStatuses", (data) => {
+                    if (data["status"] === "ok") {
+                        // console.log("received statuses: ", data)
+                        dispatch({
+                            "type": "UPDATE_WHOLE_STATUS",
+                            "newStatus": data["machine"]
+                        })
+                    }
+                })
+            }
+        }, timeout);
 
         newSocket.on('connect', () => {
             console.log("connected to server")
             newSocket.emit('getAllStatuses', (data) => {
-                if(data["status"] === "ok"){
-                    setDeviceStatus(data["devices"])
-                    console.log("received machine status: ", data["devices"])
+                if (data["status"] === "ok") {
+                    dispatch({
+                        "type": "UPDATE_WHOLE_STATUS",
+                        "newStatus": data["devices"]
+                    })
+                    // console.log("received machine status: ", data["devices"])
                 }
             })
         });
 
-    newSocket.on("disconnect", () => {
-      console.log("disconnected from server");
-    });
+        newSocket.on('disconnect', () => {
+            console.log("disconnected from server")
+        });
 
-    return () => {
-      newSocket.close();
-      newSocket.off("connect");
-      newSocket.off("disconnect");
-      clearInterval(updateInterval);
-    };
-  }, [setSocket, timeout, setDeviceStatus]);
+        return () => {
+            newSocket.close()
+            newSocket.off('connect');
+            newSocket.off('disconnect');
+            clearInterval(updateInterval)
+        }
+    }, [setSocket, timeout]);
 
-  return socket;
+    return socket
 }

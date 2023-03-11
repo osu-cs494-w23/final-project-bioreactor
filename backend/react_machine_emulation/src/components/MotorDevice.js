@@ -1,9 +1,24 @@
 import React from 'react';
 import {css} from '@emotion/css'
+import {useDispatch} from "react-redux";
 
 function MotorDevice(props) {
-    function setMotorSpeed(event) {
-        props.handleSpeedChange(event.target.value)
+    const dispatch = useDispatch()
+
+    function handleSetMotorSpeed(event) {
+        dispatch({
+            "type": "UPDATE_MOTOR_SPEED",
+            "deviceGroup": props.deviceGroup,
+            "newSpeed": event.target.value,
+            "jarName": props.device.jarName
+        })
+        props.socket.emit("setMotorSpeed", props.device.jarName, props.device.name, props.deviceGroup, event.target.value, (data) => {
+            if (data["status"] === "ok") {
+                console.log("motor ", props.device.name, " of ", props.device.jarName, " changed to speed ", data["newSpeed"])
+            } else {
+                console.log("setMotorSpeed error: ", data["errorMessage"])
+            }
+        })
     }
 
     return (
@@ -15,7 +30,7 @@ function MotorDevice(props) {
           margin: 5px;
           padding: 5px;`}>
             <h4>{props.device.name}</h4>
-            <input type={'range'} min={0} max={1000} value={props.device.speed} onInput={setMotorSpeed}/>
+            <input type={'range'} min={0} max={1000} value={props.device.speed} onInput={handleSetMotorSpeed}/>
             <p>RPM: {props.device.speed}</p>
         </div>
     );
