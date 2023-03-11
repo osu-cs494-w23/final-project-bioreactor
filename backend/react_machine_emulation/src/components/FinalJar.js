@@ -1,43 +1,124 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MotorDevice from "./MotorDevice";
 import ValveDevice from "./ValveDevice";
 
 function FinalJar({jar, socket}) {
+
+    const [file, setFile] = useState(null)
+
+    function handleChange(event) {
+        setFile(event.target.files[0])
+    }
+
+    function recipeBtnTxtDecider() {
+        switch (jar.state) {
+            case "running":
+                return "Pause Recipe"
+            case "incubationPrep":
+                if (jar.incubateReady)
+                    return "Start Recipe"
+                else
+                    return "Preparing to Incubate..."
+            case "paused":
+                return "Resume Recipe"
+            case "idle":
+                return "Start Incubation Prep"
+            default:
+                return "bakana!!!"
+        }
+    }
+
     return (
         <div>
             <h3>{jar.name}</h3>
-            <h5>Debug: {jar.debug}</h5>
+            <h5>Debug: {jar.debug ? "true" : "false"}</h5>
             <h5>State: {jar.state}</h5>
-            <button onClick={
-                ()=>{
-                    if(jar.state === "running"){
-                        socket.emit("pauseRecipe", jar.name, (status)=>{
-                            if(status["status"] === "error") {
-                                console.log(status["errorMessage"])
-                                return
-                            }
-                            console.log("Recipe paused")
-                        })
+            {jar.recipe && <h5>Recipe: {jar.recipe.name}</h5>}
+            <input type="file" id="recipeInput" name="recipe" accept="*.json" onChange={handleChange}/>
+            <button onClick={() => {
+                socket.emit("loadRecipe", file, jar.name, (status) => {
+                    if (status["status"] === "ok") {
+                        console.log("loaded recipe")
                     } else {
-                        socket.emit("startRecipe", jar.name, (status) => {
-                            if(status["status"] === "error") {
-                                console.log(status["errorMessage"])
-                                return
+                        console.log("loadRecipe failed with error: ", status["errorMessage"])
+                    }
+                })
+            }}>Submit Recipe
+            </button>
+            <br/>
+            <button onClick={
+                () => {
+                    switch (jar.state) {
+                        case "running": {
+                            socket.emit("pauseRecipe", jar.name, (status) => {
+                                if (status["status"] === "error") {
+                                    console.log(status["errorMessage"])
+                                    return
+                                }
+                                console.log("Recipe paused")
+                            })
+                            break
+                        }
+                        case "incubationPrep": {
+                            if (jar.incubateReady) {
+                                console.log("Recipe starting requested")
+                                socket.emit("startRecipe", jar.name, (status) => {
+                                    if (status["status"] === "error") {
+                                        console.log(status["errorMessage"])
+                                        return
+                                    }
+                                    console.log("Recipe started")
+                                })
                             }
-                            console.log("Recipe started")
-                        })
+                            break
+                        }
+                        case "paused": {
+                            console.log("Recipe resuming requested")
+                            socket.emit("startRecipe", jar.name, (status) => {
+                                if (status["status"] === "error") {
+                                    console.log(status["errorMessage"])
+                                    return
+                                }
+                                console.log("Recipe started")
+                            })
+                            break
+                        }
+                        case "idle": {
+                            socket.emit("startIncubationPrep", jar.name, (status) => {
+                                if (status["status"] === "error") {
+                                    console.log(status["errorMessage"])
+                                    return
+                                }
+                                console.log("Recipe incubation started")
+                            })
+                            break
+                        }
+                        default: {
+                            console.log("wtf")
+                        }
                     }
                 }
-            }>{jar.state === "running" ? "Pause Recipe" : "Start Recipe"}</button>
+            }>{recipeBtnTxtDecider()}</button>
+            {jar.state !== "idle" && <button onClick={() => {
+                socket.emit("cancelRecipe", jar.name, (status) => {
+                        if (status["status"] === "error") {
+                            console.log(status["errorMessage"])
+                            return
+                        }
+                        console.log(jar.name, " stopped")
+                    }
+                )
+            }
+            }>Cancel Recipe</button>}
             <p>Ready for incubation: {jar.incubateReady ? "true" : "false"}</p>
             <p>Receiving cooling: {jar.cooling ? "true" : "false"}</p>
-            <MotorDevice device={jar.motor} socket={socket}/>
-            {jar.valves.map((valve)=>
-                <ValveDevice device={valve} socket={socket}/>
+            <MotorDevice device={jar.impellerMotor} deviceGroup={"finalJars"} socket={socket}/>
+            {jar.valves.map((valve) =>
+                <ValveDevice key={valve["name"]} device={valve} deviceGroup={"ingredientValve"} socket={socket}/>
             )}
-            <ValveDevice device={jar.tempValve} socket={socket}/>
+            <ValveDevice device={jar.tempValve} deviceGroup={"tempValve"} socket={socket}/>
         </div>
-    );
+    )
 }
 
 export default FinalJar;

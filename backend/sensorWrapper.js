@@ -1,13 +1,14 @@
-class Sensor{
+class Sensor {
     pin
     value
+
     constructor(pin, name, jarName, debug) {
         this.pinCode = pin
         this.name = name
         this.jarName = jarName
         this.debug = debug
 
-        if(debug === false) {
+        if (debug === false) {
             const raspi = require('raspi');
             const pwm = require('raspi-soft-pwm');
             raspi.init(() => {
@@ -17,13 +18,13 @@ class Sensor{
         }
     }
 
-    set value(newValue){
-        if(!this.debug)
+    set value(newValue) {
+        if (!this.debug)
             return
         this.value = newValue
     }
 
-    get allStats(){
+    get allStats() {
         return {
             "pin": this.pinCode,
             "value": this.value,

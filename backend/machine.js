@@ -23,19 +23,19 @@ let machine = {
     )
 }
 
-function getAllStatuses(){
+function getAllStatuses() {
     return {
-        "finalJars": Array.from( machine["finalJars"] ).map(([_, jar]) => jar.allStats),
+        "finalJars": Array.from(machine["finalJars"]).map(([_, jar]) => jar.allStats),
         "startJars": machine["startJars"].map(startJarPump => startJarPump.allStats),
         "coolantMotor": machine["coolantMotor"].allStats
     }
 }
 
-let tempPolling = setInterval(()=>{
-    if(!machine) {
+let tempPolling = setInterval(() => {
+    if (!machine) {
         return
     }
-    if(pumpOnSignal > 0){
+    if (pumpOnSignal > 0) {
         machine["coolantMotor"].Speed = 1000
     } else {
         machine["coolantMotor"].Speed = 0
