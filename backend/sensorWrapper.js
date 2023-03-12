@@ -1,6 +1,6 @@
 class Sensor {
     pin
-    value
+    value = 0
 
     constructor(pin, name, jarName, debug) {
         this.pinCode = pin
@@ -13,12 +13,12 @@ class Sensor {
             const pwm = require('raspi-soft-pwm');
             raspi.init(() => {
                 this.pin = new pwm.SoftPWM({pin: pin, frequency: 200});
-                console.log("motor on pin", pin, "has been initialized")
+                console.log("sensor on pin", pin, "has been initialized")
             })
         }
     }
 
-    set value(newValue) {
+    set setValue(newValue) {
         if (!this.debug)
             return
         this.value = newValue

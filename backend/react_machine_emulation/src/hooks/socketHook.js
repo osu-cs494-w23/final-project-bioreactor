@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 export function useSocket(timeout) {
     const [socket, setSocket] = useState(null);
     const dispatch = useDispatch()
-    const serverUrl = "http://localhost:8120"
+    const serverUrl = "http://localhost:6618"
 
     useEffect(() => {
         const newSocket = io(serverUrl,

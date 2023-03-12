@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import MotorDevice from "./MotorDevice";
 import ValveDevice from "./ValveDevice";
+import SensorDevice from "./SensorDevice";
 
 function FinalJar({jar, socket}) {
 
@@ -33,7 +34,11 @@ function FinalJar({jar, socket}) {
             <h3>{jar.name}</h3>
             <h5>Debug: {jar.debug ? "true" : "false"}</h5>
             <h5>State: {jar.state}</h5>
-            {jar.recipe && <h5>Recipe: {jar.recipe.name}</h5>}
+            <h5>Temperature: {jar.tempProbe["value"]}</h5>
+            {jar.recipe && <>
+                <h5>Recipe: {jar.recipe.name}</h5>
+                <h5>Target Temperature: {jar.recipe.temperature}</h5>
+            </>}
             <input type="file" id="recipeInput" name="recipe" accept="*.json" onChange={handleChange}/>
             <button onClick={() => {
                 socket.emit("loadRecipe", file, jar.name, (status) => {
@@ -117,6 +122,7 @@ function FinalJar({jar, socket}) {
                 <ValveDevice key={valve["name"]} device={valve} deviceGroup={"ingredientValve"} socket={socket}/>
             )}
             <ValveDevice device={jar.tempValve} deviceGroup={"tempValve"} socket={socket}/>
+            <SensorDevice device={jar.tempProbe} deviceGroup={"tempProbe"} socket={socket}/>
         </div>
     )
 }
