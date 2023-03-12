@@ -107,17 +107,39 @@ function init(server) {
             }
         })
 
-        // socket.on('setSensor', (newValue, jarName, deviceGroup, callback) => {
-        //     callback = checkCallback(callback, socket.id, "loadRecipe")
-        //     if(!machineSpecification["debug"]){
-        //         callback({
-        //             "status": "error",
-        //             "errorMessage": "can't set sensor when debug is not on"
-        //         })
-        //         return
-        //     }
-        //     if(!machine["finalJ"])
-        // })
+        socket.on('setSensor', (jarName, deviceGroup, newValue, callback) => {
+            callback = checkCallback(callback, socket.id, "loadRecipe")
+            if (!machineSpecification["debug"]) {
+                callback({
+                    "status": "error",
+                    "errorMessage": "can't set sensor when debug is not on"
+                })
+                return
+            }
+            if (!machine["finalJars"].has(jarName)) {
+                callback({
+                    "status": "error",
+                    "errorMessage": "Jar not found"
+                })
+                return
+            }
+            let currentJar = machine["finalJars"].get(jarName)
+            switch (deviceGroup) {
+                case "tempProbe":
+                    console.log("received new value for tempProbe of ", jarName, ": ", newValue)
+                    currentJar.tempProbe.setValue = newValue
+                    break
+                default:
+                    callback({
+                        "status": "error",
+                        "errorMessage": "device type not found"
+                    })
+                    return
+            }
+            callback({
+                "status": "ok"
+            })
+        })
 
         socket.on('loadRecipe', (newRecipe, jarName, callback) => {
             callback = checkCallback(callback, socket.id, "loadRecipe")

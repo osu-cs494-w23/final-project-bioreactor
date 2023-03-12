@@ -95,6 +95,28 @@ export function statusReducer(machineStatus = {"finalJars": {}, "startJars": [],
                     console.log("valve type not found: ", action.type)
                     return machineStatus
             }
+        case "UPDATE_SENSOR_VALUE":
+            switch (action.deviceGroup) {
+                case "tempProbe":
+                    return {
+                        ...machineStatus,
+                        "finalJars": machineStatus["finalJars"].map(finalJar => {
+                            if (finalJar["name"] === action.jarName) {
+                                return {
+                                    ...finalJar,
+                                    "tempProbe": {
+                                        ...finalJar["tempProbe"],
+                                        "value": action.value
+                                    }
+                                }
+                            }
+                            return finalJar
+                        })
+                    }
+                default:
+                    console.log("update_sensor_value wtf")
+            }
+            break
         default:
             console.log("redux defaulting")
             return machineStatus
