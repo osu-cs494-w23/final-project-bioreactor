@@ -2,8 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import datas from "../data/sample.json";
 import { FaSearch } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { selectRecipe } from "../redux/actions";
 
 const Sidebar = ({ onClickHandler }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="sidebar">
       <div className="bold list-header">Recipe List</div>
@@ -21,8 +25,16 @@ const Sidebar = ({ onClickHandler }) => {
       <div className="recipe-list">
         {datas.map((data) => {
           return (
-            <li className="recipe-link">
-              <NavLink to={data.url}>{data.name}</NavLink>
+            <li>
+              <button
+                className="recipe-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(selectRecipe(data));
+                }}
+              >
+                {data.name}
+              </button>
             </li>
           );
         })}

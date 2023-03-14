@@ -6,6 +6,8 @@ import EditForm from "../components/EditForm";
 import DeleteWarning from "../components/DeleteWarning";
 import { NavLink } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { getRecipe } from "../redux/selectors";
 
 const Manage = () => {
   const [onAdd, setOnAdd] = useState(false);
@@ -21,6 +23,13 @@ const Manage = () => {
   const onDeleteHandler = () => {
     setOnDelete(!onDelete);
   };
+
+  const selectedRecipe = useSelector(getRecipe);
+
+  console.log(selectedRecipe);
+  if (selectedRecipe) {
+    console.log("NO");
+  }
 
   return (
     <div className="manage-page">
@@ -50,12 +59,14 @@ const Manage = () => {
             Back
           </NavLink>
         </div>
-        <div className="recipe-panel">
-          <RecipePanel
-            onClickEdit={onEditHandler}
-            onClickDelete={onDeleteHandler}
-          />
-        </div>
+        {selectedRecipe && (
+          <div className="recipe-panel">
+            <RecipePanel
+              onClickEdit={onEditHandler}
+              onClickDelete={onDeleteHandler}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

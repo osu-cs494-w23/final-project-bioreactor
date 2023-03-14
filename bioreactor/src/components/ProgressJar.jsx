@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import color from "../data/color.json";
 import ToggleButton from "./ToggleButton";
-import ControlPanel from "./ControlPanel";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { TbTemperature } from "react-icons/tb";
 import { GiElectric } from "react-icons/gi";
@@ -44,7 +43,7 @@ const ProgressJar = ({ status, jarName }) => {
   return (
     <>
       <div className="on-recipe jar">
-        <StyledSpan className="status">
+        <StyledSpan className="status-center">
           <BsCheckCircleFill className="span-icon" />
           {jar["recipe"]}
         </StyledSpan>
@@ -62,7 +61,6 @@ const ProgressJar = ({ status, jarName }) => {
           {onDetail ? "Hide" : "Details"}
         </ToggleButton>
         {onDetail && <div className="detail-container">Detail</div>}
-        {onManual && <ControlPanel />}
       </div>
     </>
   );

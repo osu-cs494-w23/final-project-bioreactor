@@ -20,6 +20,7 @@ const Main = () => {
           <ProgressJar status={color.success} jarName={"Jar 1"} />
           <ProgressJar status={color.loading} jarName={"Jar 2"} />
           <ProgressJar status={color.warning} jarName={"Jar 3"} />
+          <button className="stop-button">STOP</button>
         </>
       )}
 

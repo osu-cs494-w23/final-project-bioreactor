@@ -1,4 +1,5 @@
 import React from "react";
+import Ingredients from "./Ingredients";
 
 const AddForm = ({ onClickHandler }) => {
   return (
@@ -42,7 +43,7 @@ const AddForm = ({ onClickHandler }) => {
           <div className="subject">
             Required Ingredient<span className="required"> *</span>
           </div>
-          <textarea required name="ingredient" className="wide-text-input" />
+          <Ingredients />
         </label>
         <div>
           <input type="submit" value="Submit" className="form-button submit" />

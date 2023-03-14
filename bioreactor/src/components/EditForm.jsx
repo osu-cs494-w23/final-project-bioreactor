@@ -1,6 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { getRecipe } from "../redux/selectors";
+import Ingredients from "./Ingredients";
 
 const EditForm = ({ onClickHandler }) => {
+  const selectedRecipe = useSelector(getRecipe);
+
   return (
     <>
       <form className="addform">
@@ -13,6 +18,7 @@ const EditForm = ({ onClickHandler }) => {
             required
             type="text"
             name="name"
+            placeholder={selectedRecipe.name}
             className="general-text-input"
           />
         </label>
@@ -25,6 +31,7 @@ const EditForm = ({ onClickHandler }) => {
             type="text"
             name="temperature"
             className="general-text-input"
+            placeholder={selectedRecipe.temperature}
           />
         </label>
         <label>
@@ -36,13 +43,14 @@ const EditForm = ({ onClickHandler }) => {
             type="text"
             name="rpm"
             className="general-text-input"
+            placeholder={selectedRecipe.motorSpeed}
           />
         </label>
         <label>
           <div className="subject">
             Required Ingredient<span className="required"> *</span>
           </div>
-          <textarea required name="ingredient" className="wide-text-input" />
+          <Ingredients />
         </label>
         <div>
           <input type="submit" value="Edit" className="form-button submit" />

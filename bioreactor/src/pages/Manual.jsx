@@ -1,36 +1,43 @@
 import React, { useState } from "react";
-import EmptyJar from "../components/EmptyJar";
-import ProgressJar from "../components/ProgressJar";
-import color from "../data/color.json";
+import MotorPanel from "../components/MotorPanel";
+import ValvePanel from "../components/ValvePanel";
 
 const Manual = () => {
   const [onRecipe, setOnRecipe] = useState(false);
 
   return (
     <>
-      <div className="manual-mode-notification">You are on manual mode.</div>
-      {!onRecipe && (
-        <>
-          <EmptyJar />
-          <EmptyJar />
-          <EmptyJar />
-        </>
-      )}
-      {onRecipe && (
-        <>
-          <ProgressJar status={color.success} jarName={"Jar 1"} />
-          <ProgressJar status={color.loading} jarName={"Jar 2"} />
-          <ProgressJar status={color.warning} jarName={"Jar 3"} />
-        </>
-      )}
-
-      <button
-        onClick={() => {
-          setOnRecipe(!onRecipe);
-        }}
-      >
-        TEST
-      </button>
+      <div className="manual-container">
+        <div>
+          <h1 className="control-topic">Ingredients</h1>
+          <div className="ingredient">
+            <section className="control-panel-card">
+              <div className="control-subject">Ingredient 001</div>
+              <MotorPanel />
+              <ValvePanel />
+            </section>
+            <section className="control-panel-card">
+              <div className="control-subject">Ingredient 002</div>
+              <MotorPanel />
+              <ValvePanel />
+            </section>
+          </div>
+        </div>
+        <div>
+          <h1 className="control-topic">Cool water bucket</h1>
+          <section className="control-panel-card">
+            <MotorPanel />
+            <ValvePanel />
+          </section>
+        </div>
+        <div>
+          <h1 className="control-topic">Jars</h1>
+          <section className="control-panel-card">
+            <MotorPanel />
+            <ValvePanel />
+          </section>
+        </div>
+      </div>
     </>
   );
 };

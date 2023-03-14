@@ -7,5 +7,8 @@
   "maintext": "#273333",
   "prettygray": "#F3F4F4",
   "subtext": "#364141",
-  "border": "#DEE1E1"
+  "border": "#DEE1E1",
+  "greenBorder": "#2A8E2A",
+  "redBorder": "#751B1B",
+  "contropanelgray": "F9F9F9"
 }

@@ -1,38 +1,46 @@
 [
   {
     "id": 1,
-    "name": "recipe 01",
-    "url": "/recipes/1",
-    "requiredTemp": 75,
-    "requiredRPM": 250,
-    "ingredient": [{ "Something01": "500ml" }, { "Something02": "750ml" }]
+    "name": "salty alcohol",
+    "time": 10000,
+    "motorSpeed": 500,
+    "temperature": 40,
+    "ingredients": {
+      "Isopropyl Alcohol": 50,
+      "Salt water": 25
+    }
   },
   {
     "id": 2,
-    "name": "recipe 02",
-    "url": "/recipes/2",
-    "requiredTemp": 88,
-    "requiredRPM": 512,
-    "ingredient": [{ "Something03": "500ml" }, { "Something04": "750ml" }]
+    "name": "salty alcohol again",
+    "time": 800,
+    "motorSpeed": 500,
+    "temperature": 40,
+    "ingredients": {
+      "Isopropyl Alcohol": 50,
+      "Salt water": 25
+    }
   },
   {
     "id": 3,
-    "name": "recipe 03",
-    "url": "/recipes/3",
-    "requiredTemp": 95,
-    "requiredRPM": 888,
-    "ingredient": [{ "Something05": "500ml" }, { "Something06": "750ml" }]
+    "name": "salty alcohol deluxe",
+    "time": 500,
+    "motorSpeed": 500,
+    "temperature": 40,
+    "ingredients": {
+      "Isopropyl Alcohol": 50,
+      "Salt water": 25
+    }
   },
   {
     "id": 4,
-    "name": "recipe 04",
-    "url": "/recipes/4",
-    "requiredTemp": 60,
-    "requiredRPM": 420,
-    "ingredient": [
-      { "Something07": "500ml" },
-      { "Something08": "750ml" },
-      { "Something09": "750ml" }
-    ]
+    "name": "salty alcohol premium",
+    "time": 12000,
+    "motorSpeed": 500,
+    "temperature": 40,
+    "ingredients": {
+      "Isopropyl Alcohol": 50,
+      "Salt water": 25
+    }
   }
 ]

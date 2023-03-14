@@ -1,13 +1,15 @@
 import React from "react";
 
-const Summary = ({ onClickHandler }) => {
+const Summary = ({ onClickHandler, recipe }) => {
   return (
     <div className="summary-modal">
       <div className="modal-title">Summary</div>
       <div className="summary-container">
         <div className="left-summary">
-          <div>Temperature: Something</div>
-          <div>Motor RPM: Something</div>
+          <div className="recipe-name">Recipe: {recipe.name}</div>
+          <div>Total Time: {recipe.time}</div>
+          <div>Temperature: {recipe.temperature}</div>
+          <div>Motor RPM: {recipe.motorSpeed}</div>
           <div>Required ingredient: Something</div>
           <ul>
             <li>Something 001</li>

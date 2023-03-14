@@ -15,20 +15,57 @@ a {
 }
 
 .navbar {
-  justify-content: space-between;
+  grid-template-columns: 65% auto;
   box-shadow: rgba(255, 255, 255, 0.8) 1px 5px 0px -1px;
   padding: 0.8rem 2rem;
   border-bottom: 2px solid #dee1e1;
+  display: grid;
+  color: #364141;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.nav-container {
+  justify-content: space-between;
   display: flex;
   color: #364141;
   text-align: center;
   vertical-align: middle;
 }
 
+.stop-button {
+  cursor: pointer;
+  position: fixed;
+  bottom: 1em;
+  background-color: #c63434;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
+  border-radius: 30em;
+  width: 4em;
+  height: 4em;
+  border: none;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+  transition-duration: 0.2s;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.stop-button:hover {
+  width: 4.2em;
+  height: 4.2em;
+}
+
+.stop-button:active {
+  transition-duration: 0.1ms;
+  background-color: #fd0000;
+}
+
 .home {
+  text-align: left;
   font-weight: bold;
   color: #273333;
-  margin-right: 35em;
   font-size: 1.5em;
 }
 
@@ -43,6 +80,7 @@ a {
 
 .manage-page {
   display: grid;
+  height: 100%;
   grid-template-columns: 22em auto;
 }
 
@@ -78,13 +116,22 @@ a {
   overflow-y: auto;
   padding: 1em;
   height: 33em;
+  list-style-type: none;
 }
+
 .recipe-list li {
+  text-align: left;
+}
+
+.recipe-list button {
+  cursor: pointer;
   list-style-type: none;
   text-align: left;
-  margin: 0.7em;
+  margin: 0.5em;
   font-size: 1.1em;
   font-weight: bold;
+  background-color: transparent;
+  border: none;
 }
 
 .search {
@@ -126,19 +173,24 @@ a {
 }
 
 .add-button {
+  position: fixed;
   cursor: pointer;
   background-color: #002838;
   border: 1.5px solid white;
   color: white;
   padding: 0.5em 0.8em;
   border-radius: 0.5em;
-  margin-left: 16em;
+  margin-left: 4em;
   transition-duration: 0.2s;
 }
 
 .add-button:hover {
   color: #7dead5;
   border: 1.5px solid #7dead5;
+}
+
+.recipe-link {
+  color: white;
 }
 
 .recipe-link:hover {
@@ -232,7 +284,7 @@ a {
 
 .big {
   width: 35em;
-  height: 15em;
+  height: 20em;
 }
 
 .card-value {
@@ -292,8 +344,10 @@ a {
 .jar {
   background-color: #f3f4f4;
   border: 1px solid #dee1e1;
-  height: 35em;
-  width: 22em;
+  height: 75vh;
+  width: 22.5vw;
+  min-height: 22em;
+  min-width: 18em;
   border-radius: 1rem;
   display: inline-block;
   margin: 4em 2em;
@@ -387,6 +441,7 @@ a {
   background-size: cover;
   width: 100%;
   height: 42em;
+  margin-bottom: 2em;
 }
 
 .about {
@@ -402,6 +457,10 @@ a {
 .about-desc {
   font-size: 0.5em;
   user-select: none;
+}
+
+.about-page {
+  margin: auto;
 }
 
 .addform {
@@ -468,17 +527,77 @@ a {
   background-color: #891e1e;
 }
 
-.wide-text-input {
+.ingredient-container {
+  overflow-y: auto;
+  max-height: 15em;
+}
+
+.ingredient-input-container {
+  display: flex;
+  justify-content: center;
+}
+
+.add-ingredient {
+  cursor: pointer;
+  background-color: #002838;
+  color: white;
+  border: none;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 0.2em 6em;
+  margin: 1em;
+  border-radius: 3em;
+}
+
+.add-ingredient:hover {
+  color: #7dead5;
+  transition-duration: 0.2s;
+}
+
+.add-ingredient:active {
+  color: white;
+  background-color: #00587a;
+}
+
+.wide-ingredient-input {
   font-size: 1.1em;
   font-family: "Inter", sans-serif;
   padding: 0.5em 0.8em;
   border: 2px solid #dee1e1;
   border-radius: 0.5em;
   outline: none;
-  width: 30em;
-  height: 15em;
-  resize: none;
+  width: 15em;
+  height: 1.2em;
   margin-bottom: 0.3em;
+  margin: 0.2em;
+}
+
+.wide-amount-input {
+  font-size: 1.1em;
+  font-family: "Inter", sans-serif;
+  padding: 0.5em 0.8em;
+  border: 2px solid #dee1e1;
+  border-radius: 0.5em;
+  outline: none;
+  width: 5em;
+  height: 1.2em;
+  margin-bottom: 0.3em;
+  margin: 0.2em;
+}
+
+.order-box {
+  font-size: 1.1em;
+  font-family: "Inter", sans-serif;
+  padding: 0.5em 0.8em;
+  border: 2px solid #dee1e1;
+  border-radius: 0.5em;
+  outline: none;
+  width: 1.2em;
+  height: 1.2em;
+  margin-bottom: 0.3em;
+  margin: 0.2em;
+  background-color: #002838;
+  color: white;
 }
 
 .required {
@@ -546,4 +665,152 @@ a {
   text-align: left;
   margin-bottom: 1.2em;
   font-weight: bold;
+}
+
+.manual-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.ingredient {
+  display: flex;
+}
+
+.manual-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.control-topic {
+  color: #002838;
+  text-align: left;
+  margin-left: 0.4em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #d4d7d7;
+}
+
+.control-panel-card {
+  width: 22vw;
+  min-width: 300px;
+  margin: 0.2em 1.4em;
+}
+
+.control-panel-card ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.control-subject {
+  color: #273333;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-align: left;
+}
+
+.small-subject {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.motor-panel {
+  background-color: #f9f9f9;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border: 2px solid #d4d7d7;
+  font-weight: bold;
+}
+
+.status-container {
+  display: flex;
+  justify-content: center;
+}
+
+.status {
+  text-align: left;
+  margin-left: 0.4em;
+}
+
+.valve-panel {
+  background-color: #f9f9f9;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border: 2px solid #d4d7d7;
+  font-weight: bold;
+}
+
+.range-input {
+  margin-right: 1em;
+  width: 12em;
+}
+
+.apply {
+  cursor: pointer;
+  background-color: #002838;
+  color: white;
+  border: none;
+  border-radius: 0.3em;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  transition-duration: 0.1s;
+}
+
+.apply:hover {
+  color: #7dead5;
+}
+
+.apply:active {
+  color: #bffff2;
+}
+
+.rotate {
+  transform: rotate(-0.5turn);
+  padding: 0;
+  margin-bottom: -0.1em;
+}
+
+.valve-li {
+  margin: 0.2em;
+}
+
+.input-invalid-message {
+  color: #e62929;
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+.fancy-main {
+  color: #002838;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.fancy-text {
+  color: #002838;
+  font-weight: normal;
+  font-size: 1.2em;
+}
+
+.fancy-paragraph {
+  margin: 2em;
+}
+
+.fancy-container {
+  padding: 5em;
+  padding-top: 2em;
+}
+
+#motor-manual-input {
+  width: 50px;
+  border: 2px solid #dee1e1;
+  padding: 0.2em;
+  border-radius: 0.3em;
+  margin-right: 0.5em;
 }

@@ -7,6 +7,8 @@ import EditForm from "../components/EditForm";
 import DeleteWarning from "../components/DeleteWarning";
 import { NavLink } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { getRecipe } from "../redux/selectors";
 
 const Selection = () => {
   const [onSummary, SetOnSummary] = useState(false);
@@ -28,11 +30,13 @@ const Selection = () => {
     SetOnSummary(!onSummary);
   };
 
+  const selectedRecipe = useSelector(getRecipe);
+
   return (
     <div className="manage-page">
       {onSummary && (
         <>
-          <Summary onClickHandler={onClickSummary} />
+          <Summary onClickHandler={onClickSummary} recipe={selectedRecipe} />
           <div className="backscreen"></div>
         </>
       )}
@@ -63,13 +67,19 @@ const Selection = () => {
           </NavLink>
         </div>
         <div className="recipe-panel">
-          <RecipePanel
-            onClickEdit={onEditHandler}
-            onClickDelete={onDeleteHandler}
-          />
-          <button className="load-button" onClick={onClickSummary}>
-            Load recipe
-          </button>
+          {selectedRecipe && (
+            <>
+              <div className="recipe-panel">
+                <RecipePanel
+                  onClickEdit={onEditHandler}
+                  onClickDelete={onDeleteHandler}
+                />
+              </div>
+              <button className="load-button" onClick={onClickSummary}>
+                Load recipe
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
