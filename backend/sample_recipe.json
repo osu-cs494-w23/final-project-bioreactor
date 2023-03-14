@@ -4,7 +4,7 @@
   "motorSpeed": 500,
   "temperature": 40,
   "ingredients": {
-    "Isopropyl Alcohol": 50,
+    "Isopropyl Alcohol": 20,
     "Salt water": 25
   }
 }

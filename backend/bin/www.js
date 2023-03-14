@@ -13,7 +13,8 @@ const {init} = require("../socketio");
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || Math.floor(Math.random() * (10000 - 999) + 999));
+// var port = normalizePort(process.env.PORT || Math.floor(Math.random() * (10000 - 999) + 999));
+var port = 3001
 app.set('port', port);
 
 /**
