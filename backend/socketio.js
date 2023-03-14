@@ -14,6 +14,17 @@ function init(server) {
 
     io.on('connection', (socket) => {
         console.log("connection initialized by id: ", socket.id)
+
+        socket.on("echoTest", (message, callback) => {
+            console.log(message)
+            callback({
+                "message": message
+            })
+            socket.emit("echoTest2", ()=>{
+                console.log("returned from echoTest")
+            })
+        })
+
         socket.on('getMachineSpec', (callback) => {
             callback = checkCallback(callback, socket.id, "getMachineSpec")
             callback({
