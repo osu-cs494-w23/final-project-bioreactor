@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import EmptyJar from "../components/EmptyJar";
 import ProgressJar from "../components/ProgressJar";
+import { useSocket } from "../hooks/socketHook";
 import color from "../data/color.json";
 
 const Main = () => {
   const [onRecipe, setOnRecipe] = useState(false);
+  const socket = useSocket(500);
 
+  console.log(socket);
   return (
     <>
       {!onRecipe && (
