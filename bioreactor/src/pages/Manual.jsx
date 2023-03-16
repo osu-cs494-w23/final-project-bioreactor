@@ -25,7 +25,7 @@ const Manual = ({ socket }) => {
               return (
                 <IngredientControlPanel
                   jar={jar}
-                  finalJars={deviceStatus.finalJars}
+                  // finalJars={deviceStatus.finalJars}
                 />
               );
             })}
@@ -35,24 +35,26 @@ const Manual = ({ socket }) => {
           <h1 className="control-topic">Cool water bucket</h1>
           <section className="control-panel-card">
             <MotorPanel currentRPM={deviceStatus.coolantMotor.speed} />
-            <div className="valve-panel">
-              <div className="control-subject small-subject">Valves</div>
-              <ul>
-                {deviceStatus.finalJars.map((jar) => {
-                  return jar.valves.map((valve) => {
-                    return <ValveControl valve={valve} />;
-                  });
-                })}
-              </ul>
-            </div>
+            {/*<div className="valve-panel">*/}
+            {/*  <div className="control-subject small-subject">Valves</div>*/}
+            {/*  <ul>*/}
+            {/*    {deviceStatus.finalJars.map((jar) => {*/}
+            {/*      return jar.valves.map((valve) => {*/}
+            {/*        return <ValveControl valve={valve} />;*/}
+            {/*      });*/}
+            {/*    })}*/}
+            {/*  </ul>*/}
+            {/*</div>*/}
           </section>
         </div>
         <div>
           <h1 className="control-topic">Jars</h1>
-          <section className="control-panel-card">
-            <MotorPanel />
-            {/* <ValvePanel /> */}
-          </section>
+          {deviceStatus.finalJars.map(jar =>
+              <section className="control-panel-card">
+                <MotorPanel />
+                <ValvePanel valves={[...jar.valves, jar.tempValve]}/>
+              </section>
+          )}
         </div>
       </div>
     </>

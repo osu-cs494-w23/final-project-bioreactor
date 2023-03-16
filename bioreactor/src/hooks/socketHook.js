@@ -1,26 +1,15 @@
-import { useEffect, useState } from "react";
+import {useContext, useEffect} from "react";
 import { useDispatch } from "react-redux";
-import io from "socket.io-client";
+import {initiateSocket, socket} from "../context/socket";
 
 export function useSocket(timeout) {
-  const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
-  const serverUrl = "http://localhost:3001";
-  console.log("1");
   useEffect(() => {
-    console.log("HELLo");
-    const newSocket = io(serverUrl, {
-      cors: {
-        origin: serverUrl,
-        methods: ["GET", "POST"],
-      },
-    });
-    console.log("2");
-    setSocket(newSocket);
-    console.log("3");
+    initiateSocket()
+    console.log("socket:", socket)
     let updateInterval = setInterval(() => {
-      if (newSocket !== null) {
-        newSocket.emit("getAllStatuses", (data) => {
+      if (socket !== null) {
+        socket.emit("getAllStatuses", (data) => {
           if (data["status"] === "ok") {
             // console.log("received statuses: ", data)
             dispatch({
@@ -32,9 +21,9 @@ export function useSocket(timeout) {
       }
     }, timeout);
 
-    newSocket.on("connect", () => {
+    socket.on("connect", () => {
       console.log("connected to server");
-      newSocket.emit("getAllStatuses", (data) => {
+      socket.emit("getAllStatuses", (data) => {
         if (data["status"] === "ok") {
           dispatch({
             type: "UPDATE_WHOLE_STATUS",
@@ -45,17 +34,17 @@ export function useSocket(timeout) {
       });
     });
 
-    newSocket.on("disconnect", () => {
+    socket.on("disconnect", () => {
       console.log("disconnected from server");
     });
 
     return () => {
-      newSocket.close();
-      newSocket.off("connect");
-      newSocket.off("disconnect");
+      socket.close();
+      socket.off("connect");
+      socket.off("disconnect");
       clearInterval(updateInterval);
     };
-  }, [setSocket, timeout]);
+  }, [dispatch, timeout]);
 
   return socket;
 }

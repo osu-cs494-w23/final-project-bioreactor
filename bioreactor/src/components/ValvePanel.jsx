@@ -6,9 +6,9 @@ const ValvePanel = ({ valves }) => {
     <div className="valve-panel">
       <div className="control-subject small-subject">Valves</div>
       <ul>
-        <ValveControl />
-        <ValveControl />
-        <ValveControl />
+          {valves.map(valve =>
+              <ValveControl valve={valve}/>
+          )}
       </ul>
     </div>
   );

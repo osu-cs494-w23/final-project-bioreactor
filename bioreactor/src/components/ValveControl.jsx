@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {socket} from "../context/socket";
 
 const ValveControl = ({ valve }) => {
   //console.log(valve);
@@ -11,6 +12,10 @@ const ValveControl = ({ valve }) => {
         onClick={(e) => {
           e.preventDefault();
           setIsOpen(!isOpen);
+          console.log(valve)
+          socket.emit("toggleValve", valve.jarName, valve.name, "tempValve", isOpen, (response) => {
+              console.log("Valve changed:", response)
+          })
         }}
       >
         {isOpen ? "Close" : "Open"}
