@@ -9,3 +9,19 @@ export function getJar(state, jarName) {
 export function getRecipe(state) {
   return state.recipe || null;
 }
+
+export function getLocalStatus(state) {
+  return state.machineStatus || null;
+}
+
+export function getJarName(state) {
+  return state.jarName || null;
+}
+
+export function getIngredientNames(state) {
+  return state.names || [];
+}
+
+export function getIngredientAmounts(state) {
+  return state.amounts || [];
+}

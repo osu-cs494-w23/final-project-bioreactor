@@ -19,6 +19,44 @@
       "tempProbe": {
         "pin": "GPIO16"
       }
+    },
+    "Jar 2": {
+      "impellerMotor": {
+        "pin": "GPIO21",
+        "name": "motor2"
+      },
+      "valves": [
+        {
+          "pin": "GPIO16",
+          "name": "valve2",
+          "startJar": 0
+        }
+      ],
+      "tempValve": {
+        "pin": "GPIO17"
+      },
+      "tempProbe": {
+        "pin": "GPIO16"
+      }
+    },
+    "Jar 3": {
+      "impellerMotor": {
+        "pin": "GPIO21",
+        "name": "motor3"
+      },
+      "valves": [
+        {
+          "pin": "GPIO16",
+          "name": "valve3",
+          "startJar": 0
+        }
+      ],
+      "tempValve": {
+        "pin": "GPIO17"
+      },
+      "tempProbe": {
+        "pin": "GPIO16"
+      }
     }
   },
   "startJars": [

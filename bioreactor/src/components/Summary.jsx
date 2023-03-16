@@ -1,6 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Summary = ({ onClickHandler, recipe }) => {
+const Summary = ({ onClickHandler, recipe, jarName, socket }) => {
+  const navigate = useNavigate();
+
+  const loadRecipe = () => {
+    console.log("RECIPE is: ", recipe);
+    socket.emit("loadRecipe", recipe, jarName);
+    navigate("main");
+  };
+
   return (
     <div className="summary-modal">
       <div className="modal-title">Summary</div>
@@ -22,7 +31,9 @@ const Summary = ({ onClickHandler, recipe }) => {
         </div>
       </div>
       <div className="button-container">
-        <button className="form-button submit">Done</button>
+        <button className="form-button submit" onClick={loadRecipe}>
+          Done
+        </button>
         <button className="form-button cancel" onClick={onClickHandler}>
           Cancel
         </button>

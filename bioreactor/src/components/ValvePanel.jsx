@@ -1,7 +1,7 @@
 import React from "react";
 import ValveControl from "./ValveControl";
 
-const ValvePanel = () => {
+const ValvePanel = ({ valves }) => {
   return (
     <div className="valve-panel">
       <div className="control-subject small-subject">Valves</div>

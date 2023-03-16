@@ -5,11 +5,11 @@ import ToggleButton from "./ToggleButton";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { TbTemperature } from "react-icons/tb";
 import { GiElectric } from "react-icons/gi";
-
 import { useSelector } from "react-redux";
-import { getJar } from "../redux/selectors";
+import { getLocalStatus } from "../redux/selectors";
+import ProgressPanel from "./ProgressPanel";
 
-const ProgressJar = ({ status, jarName }) => {
+const ProgressJar = ({ status, jar }) => {
   const StyledSpan = styled.span`
     background: ${status};
     color: white;
@@ -37,30 +37,36 @@ const ProgressJar = ({ status, jarName }) => {
 
   const [onDetail, setOnDetail] = useState(false);
   const [onManual, setonManual] = useState(true);
-  const jar = useSelector((state) => getJar(state, jarName));
   const toggle = () => setOnDetail(!onDetail);
+
+  console.log("NEW JAR: ", jar);
 
   return (
     <>
       <div className="on-recipe jar">
         <StyledSpan className="status-center">
           <BsCheckCircleFill className="span-icon" />
-          {jar["recipe"]}
+          {jar.name}&nbsp;&#40;{jar.recipe.name}&#41;
         </StyledSpan>
         <StatusSpan>
           <span className="temperature">
             <TbTemperature className="status-temp-icon" />
-            {jar["temperature"]} °F
+            {jar.tempProbe.value} °F
           </span>
           <span className="rpm">
             <GiElectric className="status-rpm-icon" />
-            RPM {jar["impellerMotor"]["speed"]}
+            RPM {jar.impellerMotor.speed}
           </span>
         </StatusSpan>
+        <ProgressPanel jar={jar} />
         <ToggleButton className="togglebutton" onClick={toggle}>
           {onDetail ? "Hide" : "Details"}
         </ToggleButton>
-        {onDetail && <div className="detail-container">Detail</div>}
+        {onDetail && (
+          <div className="detail-container">
+            <li>Hello</li>
+          </div>
+        )}
       </div>
     </>
   );

@@ -38,9 +38,9 @@ export function useSocket(timeout) {
         if (data["status"] === "ok") {
           dispatch({
             type: "UPDATE_WHOLE_STATUS",
-            newStatus: data["devices"],
+            newStatus: data["machine"],
           });
-          console.log("received machine status: ", data["devices"]);
+          console.log("received machine status: ", data["machine"]);
         }
       });
     });

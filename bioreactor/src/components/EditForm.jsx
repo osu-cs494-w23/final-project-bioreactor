@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getRecipe } from "../redux/selectors";
 import Ingredients from "./Ingredients";
 
 const EditForm = ({ onClickHandler }) => {
   const selectedRecipe = useSelector(getRecipe);
+  const [name, setName] = useState(selectedRecipe.name);
+
+  // Make...object...and..be..happy.......................
+
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  };
 
   return (
     <>
@@ -18,7 +25,8 @@ const EditForm = ({ onClickHandler }) => {
             required
             type="text"
             name="name"
-            placeholder={selectedRecipe.name}
+            value={name}
+            onInput={handleChangeName}
             className="general-text-input"
           />
         </label>
@@ -31,7 +39,7 @@ const EditForm = ({ onClickHandler }) => {
             type="text"
             name="temperature"
             className="general-text-input"
-            placeholder={selectedRecipe.temperature}
+            value={selectedRecipe.temperature}
           />
         </label>
         <label>
@@ -43,7 +51,7 @@ const EditForm = ({ onClickHandler }) => {
             type="text"
             name="rpm"
             className="general-text-input"
-            placeholder={selectedRecipe.motorSpeed}
+            value={selectedRecipe.motorSpeed}
           />
         </label>
         <label>

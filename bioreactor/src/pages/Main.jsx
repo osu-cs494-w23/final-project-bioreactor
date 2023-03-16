@@ -1,17 +1,26 @@
 import React, { useState } from "react";
 import EmptyJar from "../components/EmptyJar";
 import ProgressJar from "../components/ProgressJar";
-import { useSocket } from "../hooks/socketHook";
 import color from "../data/color.json";
+import { useSelector } from "react-redux";
+import { getLocalStatus } from "../redux/selectors";
+import Jar from "../components/Jar";
 
-const Main = () => {
+const Main = ({ socket }) => {
+  const deviceStatus = useSelector(getLocalStatus);
   const [onRecipe, setOnRecipe] = useState(false);
-  const socket = useSocket(500);
+  if (!deviceStatus.finalJars[0]) {
+    return;
+  }
 
-  console.log(socket);
   return (
-    <>
-      {!onRecipe && (
+    <div>
+      <div className="jar-container">
+        {deviceStatus.finalJars.map((jar) => {
+          return <Jar jar={jar} />;
+        })}
+
+        {/* {!onRecipe && (
         <>
           <EmptyJar />
           <EmptyJar />
@@ -33,8 +42,10 @@ const Main = () => {
         }}
       >
         TEST
-      </button>
-    </>
+      </button> */}
+      </div>
+      <button className="stop-button">STOP</button>
+    </div>
   );
 };
 

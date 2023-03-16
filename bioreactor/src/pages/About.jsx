@@ -47,7 +47,7 @@ const About = () => {
               iteration="1"
               fillMode="none"
             >
-              : Some cool sentences
+              : MAKE YOUR LIFE EASIER
             </MovingText>
           </div>
         </div>

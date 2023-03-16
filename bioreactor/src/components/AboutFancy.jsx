@@ -56,7 +56,7 @@ const AboutFancy = () => {
         iteration="1"
         fillMode="none"
       >
-        Frank Nguyen
+        Frank Nguyen &#40;Backend&#41;
       </MovingText>
       <MovingText
         className="fancy-text"
@@ -68,7 +68,7 @@ const AboutFancy = () => {
         iteration="1"
         fillMode="none"
       >
-        Imgyeong Lee
+        Imgyeong Lee &#40;Frontend&#41;
       </MovingText>
     </div>
   );

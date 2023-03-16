@@ -50,6 +50,7 @@ a {
   justify-content: center;
   align-items: center;
   vertical-align: middle;
+  right: 1em;
 }
 
 .stop-button:hover {
@@ -354,6 +355,14 @@ a {
   position: relative;
 }
 
+.jar-container {
+  display: flex;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
 .loadbutton {
   margin: 0;
   display: inline-block;
@@ -428,6 +437,7 @@ a {
   bottom: 3.5em;
   text-align: center;
   width: 100%;
+  overflow-y: auto;
 }
 
 .control-panel {
@@ -733,6 +743,12 @@ a {
 .status {
   text-align: left;
   margin-left: 0.4em;
+}
+
+.progress-text {
+  color: #002838;
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 .valve-panel {

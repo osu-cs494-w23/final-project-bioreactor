@@ -9,8 +9,9 @@ import { NavLink } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { getRecipe } from "../redux/selectors";
+import { getJarName } from "../redux/selectors";
 
-const Selection = () => {
+const Selection = ({ socket }) => {
   const [onSummary, SetOnSummary] = useState(false);
   const [onAdd, setOnAdd] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
@@ -31,12 +32,20 @@ const Selection = () => {
   };
 
   const selectedRecipe = useSelector(getRecipe);
+  const selectedJarName = useSelector(getJarName);
+
+  // console.log("HERE IS JAR NAME: ", selectedJarName);
 
   return (
     <div className="manage-page">
       {onSummary && (
         <>
-          <Summary onClickHandler={onClickSummary} recipe={selectedRecipe} />
+          <Summary
+            onClickHandler={onClickSummary}
+            recipe={selectedRecipe}
+            socket={socket}
+            jarName={selectedJarName}
+          />
           <div className="backscreen"></div>
         </>
       )}

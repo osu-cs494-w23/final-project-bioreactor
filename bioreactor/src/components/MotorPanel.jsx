@@ -11,10 +11,20 @@ const MotorPanel = ({ currentRPM = 0 }) => {
     // If the input is invalid
     if (e.target.value === "") {
       SetOnInvalid(false);
+      if (e.target.value > 1000) {
+        Setvalue(1000);
+      } else {
+        Setvalue(e.target.value);
+      }
     } else if (!validNumber.test(e.target.value)) {
       SetOnInvalid(true);
     } else {
       SetOnInvalid(false);
+      if (e.target.value > 1000) {
+        Setvalue(1000);
+      } else {
+        Setvalue(e.target.value);
+      }
     }
   };
 
@@ -35,10 +45,13 @@ const MotorPanel = ({ currentRPM = 0 }) => {
           min="0"
           max="1000"
           link-to="motor-manual-input"
+          value={value}
+          onInput={handleChange}
         ></input>
         <input
           type="text"
           id="motor-manual-input"
+          value={value}
           onChange={handleChange}
         ></input>
         <button type="button" className="apply">

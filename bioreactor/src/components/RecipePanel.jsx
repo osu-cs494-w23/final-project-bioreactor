@@ -6,7 +6,7 @@ const RecipePanel = ({ onClickEdit, onClickDelete }) => {
   const selectedRecipe = useSelector(getRecipe);
   const ingredients = Object.keys(selectedRecipe.ingredients);
   const amounts = Object.values(selectedRecipe.ingredients);
-  console.log(ingredients);
+  // console.log(ingredients);
 
   return (
     <>
