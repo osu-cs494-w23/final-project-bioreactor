@@ -12,7 +12,7 @@ const IngredientControlPanel = ({ jar }) => {
   return (
     <section className="control-panel-card">
       <div className="control-subject">{jar.jarName}</div>
-      <MotorPanel currentRPM={jar.speed} />
+      <MotorPanel device={jar} />
       {/*<div className="valve-panel">*/}
       {/*  <div className="control-subject small-subject">Valves</div>*/}
       {/*  <ul>*/}

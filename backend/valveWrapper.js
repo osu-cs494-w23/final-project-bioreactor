@@ -11,13 +11,14 @@ class Valve {
     gpio
     cancel
     state = "idle" //"running", "paused", "idle"
-    constructor(pin, name, jarName, ingredientJarName, debug) {
+    constructor(pin, name, jarName, ingredientJarName, deviceGroup, debug) {
         this.pinCode = pin
         this.opened = false
         this.debug = debug
         this.name = name
         this.jarName = jarName
         this.ingredientJarName = ingredientJarName
+        this.deviceGroup = deviceGroup
 
         if (debug === false) {
             const raspi = require('raspi');
@@ -72,6 +73,7 @@ class Valve {
             "debug": this.debug,
             "name": this.name,
             "jarName": this.jarName,
+            "deviceGroup": this.deviceGroup,
             "type": "valve"
         }
     }

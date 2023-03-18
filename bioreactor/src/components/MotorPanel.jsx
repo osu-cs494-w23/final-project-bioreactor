@@ -3,7 +3,7 @@ import { FaShare } from "react-icons/fa";
 import { validNumber } from "../data/regex";
 import InvalidMessage from "./InvalidMessage";
 
-const MotorPanel = ({ currentRPM = 0 }) => {
+const MotorPanel = ({ device }) => {
   const [value, Setvalue] = useState(0);
   const [onInvalid, SetOnInvalid] = useState(false);
 
@@ -13,6 +13,7 @@ const MotorPanel = ({ currentRPM = 0 }) => {
       SetOnInvalid(false);
       if (e.target.value > 1000) {
         Setvalue(1000);
+
       } else {
         Setvalue(e.target.value);
       }
@@ -34,7 +35,7 @@ const MotorPanel = ({ currentRPM = 0 }) => {
 
       <div className="status">Status</div>
       <div className="status-container">
-        {currentRPM}
+        {device.speed}
         <div>&nbsp;&nbsp;RPM</div>
       </div>
       <div className="status">Custom</div>

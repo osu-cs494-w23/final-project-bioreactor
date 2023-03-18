@@ -23,12 +23,21 @@ class Jar {
             individualValve => [
                 individualValve["name"], {
                     "startJar": machineSpecification["startJars"][individualValve["startJar"]],
-                    "valve": new Valve(individualValve["pin"], individualValve["name"], name, machineSpecification["startJars"][individualValve["startJar"]]["ingredient"], this.debug)
+                    "valve": new Valve(
+                        individualValve["pin"],
+                        individualValve["name"],
+                        name,
+                        machineSpecification["startJars"][individualValve["startJar"]]["ingredient"],
+                        "ingredientValve",
+                        this.debug
+                    )
                 }
             ]
         ))
 
-        this.tempValve = new Valve(this.specification["tempValve"]["pin"], name + "TempValve", name, this.debug)
+        this.tempValve = new Valve(this.specification["tempValve"]["pin"], name + "TempValve", name, "coolantJar", "tempValve",
+        this.debug
+    )
         this.tempProbe = new Sensor(this.specification["tempProbe"]["pin"], name + "TempProbe", name, this.debug)
     }
 
@@ -75,11 +84,11 @@ class Jar {
         this.statusPolling = setInterval(() => {
             //determine if the cooling motor needs to run or not
             if (this.tempProbe.value > (this.recipe["temperature"] + 2) && !this.cooling) {
-                if(pumpOnSignal)
+                if (pumpOnSignal)
                     pumpOnSignal["on"] += 1
                 this.cooling = true
             } else if (this.tempProbe.value < (this.recipe["temperature"] - 2) && this.cooling) {
-                if(pumpOnSignal)
+                if (pumpOnSignal)
                     pumpOnSignal["on"] -= 1
                 this.cooling = false
             }

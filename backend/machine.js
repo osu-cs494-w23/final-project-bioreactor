@@ -39,7 +39,6 @@ setInterval(() => {
     } else {
         machine["coolantMotor"].Speed = 0
     }
-    console.log(ingredientOnSignal)
     machine["startJars"].forEach(ingredientPump => {
         if(ingredientOnSignal[ingredientPump["jarName"]] === undefined)
             return

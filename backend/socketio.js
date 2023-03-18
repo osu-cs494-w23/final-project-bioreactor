@@ -44,7 +44,7 @@ function init(server) {
 
         socket.on('setMotorSpeed', (jarName, deviceName, deviceGroup, newSpeed, callback) => {
             callback = checkCallback(callback, socket.id, "setMotorSpeed")
-            // console.log("received new speed: ", newSpeed, " for ", deviceName, " of ", jarName)
+            console.log("received new speed: ", newSpeed, " for ", deviceName, " of ", jarName)
             switch (deviceGroup) {
                 case "coolantMotor":
                     machine["coolantMotor"].Speed = newSpeed

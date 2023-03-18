@@ -6,7 +6,7 @@ import IngredientControlPanel from "../components-control/IngredientControlPanel
 import { useSelector } from "react-redux";
 import { getLocalStatus } from "../redux/selectors";
 
-const Manual = ({ socket }) => {
+const Manual = () => {
   const deviceStatus = useSelector(getLocalStatus);
   if (!deviceStatus.startJars[0]) {
     return;
@@ -15,6 +15,7 @@ const Manual = ({ socket }) => {
   if (!deviceStatus.finalJars[0]) {
     return;
   }
+  // console.log(deviceStatus)
   return (
     <>
       <div className="manual-container">

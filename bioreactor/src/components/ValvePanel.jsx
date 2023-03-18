@@ -7,7 +7,7 @@ const ValvePanel = ({ valves }) => {
       <div className="control-subject small-subject">Valves</div>
       <ul>
           {valves.map(valve =>
-              <ValveControl valve={valve}/>
+              <ValveControl key={valve.name} valve={valve}/>
           )}
       </ul>
     </div>
