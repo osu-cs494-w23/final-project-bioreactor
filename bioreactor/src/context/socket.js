@@ -4,7 +4,7 @@ const serverUrl = "http://localhost:3001";
 
 export let socket
 
-export function initiateSocket(){
+export function initiateSocket() {
     socket = io(serverUrl, {
         cors: {
             origin: serverUrl,

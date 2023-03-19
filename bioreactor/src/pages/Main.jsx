@@ -1,26 +1,23 @@
-import React, { useState } from "react";
-import EmptyJar from "../components/EmptyJar";
-import ProgressJar from "../components/ProgressJar";
-import color from "../data/color.json";
-import { useSelector } from "react-redux";
-import { getLocalStatus } from "../redux/selectors";
+import React, {useState} from "react";
+import {useSelector} from "react-redux";
+import {getLocalStatus} from "../redux/selectors";
 import Jar from "../components/Jar";
 
-const Main = ({ socket }) => {
-  const deviceStatus = useSelector(getLocalStatus);
-  const [onRecipe, setOnRecipe] = useState(false);
-  if (!deviceStatus.finalJars[0]) {
-    return;
-  }
+const Main = ({socket}) => {
+    const deviceStatus = useSelector(getLocalStatus);
+    const [onRecipe, setOnRecipe] = useState(false);
+    if (!deviceStatus.finalJars[0]) {
+        return;
+    }
 
-  return (
-    <div>
-      <div className="jar-container">
-        {deviceStatus.finalJars.map((jar) => {
-          return <Jar jar={jar} />;
-        })}
+    return (
+        <div>
+            <div className="jar-container">
+                {deviceStatus.finalJars.map((jar) => {
+                    return <Jar key={jar.name} jar={jar}/>;
+                })}
 
-        {/* {!onRecipe && (
+                {/* {!onRecipe && (
         <>
           <EmptyJar />
           <EmptyJar />
@@ -43,10 +40,10 @@ const Main = ({ socket }) => {
       >
         TEST
       </button> */}
-      </div>
-      <button className="stop-button">STOP</button>
-    </div>
-  );
+            </div>
+            <button className="stop-button">STOP</button>
+        </div>
+    );
 };
 
 export default Main;

@@ -162,7 +162,7 @@ function init(server) {
                 return
             }
 
-            machine["finalJars"].get(jarName).setRecipe = JSON.parse(newRecipe.toString());
+            machine["finalJars"].get(jarName).setRecipe = newRecipe;
             callback({
                 "status": "ok"
             })
