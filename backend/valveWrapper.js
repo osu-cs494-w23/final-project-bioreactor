@@ -1,4 +1,4 @@
-let {ingredientOnSignal} = require("./signals");
+let {ingredientOnSignal, pumpOnSignal} = require("./signals");
 
 class Valve {
     // motor's actionQueue's structure:
@@ -45,10 +45,20 @@ class Valve {
 
     set openState(newState) {
         if(this.opened !== newState){
-            if(newState){
-                ingredientOnSignal[this.ingredientJarName] += 1
-            } else {
-                ingredientOnSignal[this.ingredientJarName] -= 1
+            switch (this.deviceGroup){
+                case "ingredientValve":
+                    if(newState){
+                        ingredientOnSignal[this.ingredientJarName] += 1
+                    } else {
+                        ingredientOnSignal[this.ingredientJarName] -= 1
+                    }
+                    break
+                case "tempValve":
+                    if(newState){
+                        pumpOnSignal["on"] += 1
+                    } else {
+                        pumpOnSignal["on"] -= 1
+                    }
             }
         }
         this.opened = newState
