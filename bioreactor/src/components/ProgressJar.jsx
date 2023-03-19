@@ -21,18 +21,6 @@ const ProgressJar = ({status, jar}) => {
       font-size: 1.1em;
     `;
 
-    const StatusSpan = styled.span`
-      background: ${color.prettygray};
-      color: ${color.maintext};
-      width: 100%;
-      display: flex;
-      padding-top: 0.8em;
-      padding-bottom: 0.8em;
-      font-weight: bold;
-      font-size: 1.2em;
-      justify-content: space-between;
-    `;
-
     const [onDetail, setOnDetail] = useState(false);
     const [onManual, setonManual] = useState(true);
     const toggle = () => setOnDetail(!onDetail);
@@ -46,7 +34,7 @@ const ProgressJar = ({status, jar}) => {
                     <BsCheckCircleFill className="span-icon"/>
                     {jar.name}&nbsp;&#40;{jar.recipe.name}&#41;
                 </StyledSpan>
-                <StatusSpan>
+                <div className="status-span">
           <span className="temperature">
             <TbTemperature className="status-temp-icon"/>
               {jar.tempProbe.value} °F
@@ -55,7 +43,7 @@ const ProgressJar = ({status, jar}) => {
             <GiElectric className="status-rpm-icon"/>
             RPM {jar.impellerMotor.speed}
           </span>
-                </StatusSpan>
+                </div>
                 <ProgressPanel jar={jar}/>
                 <ToggleButton className="togglebutton" onClick={toggle}>
                     {onDetail ? "Hide" : "Details"}

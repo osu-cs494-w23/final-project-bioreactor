@@ -14,7 +14,7 @@ const Manual = () => {
     if (!deviceStatus.finalJars[0]) {
         return;
     }
-    // console.log(deviceStatus)
+    console.log(deviceStatus.coolantMotor)
     return (
         <>
             <div className="manual-container">
@@ -35,16 +35,6 @@ const Manual = () => {
                     <h1 className="control-topic">Cool water bucket</h1>
                     <section className="control-panel-card">
                         <MotorPanel device={deviceStatus.coolantMotor}/>
-                        {/*<div className="valve-panel">*/}
-                        {/*  <div className="control-subject small-subject">Valves</div>*/}
-                        {/*  <ul>*/}
-                        {/*    {deviceStatus.finalJars.map((jar) => {*/}
-                        {/*      return jar.valves.map((valve) => {*/}
-                        {/*        return <ValveControl valve={valve} />;*/}
-                        {/*      });*/}
-                        {/*    })}*/}
-                        {/*  </ul>*/}
-                        {/*</div>*/}
                     </section>
                 </div>
                 <div>
