@@ -83,14 +83,16 @@ class Jar {
         //this interval runs until the recipe is cancelled
         this.statusPolling = setInterval(() => {
             //determine if the cooling motor needs to run or not
-            if (this.tempProbe.value > (this.recipe["temperature"] + 2) && !this.cooling) {
-                if (pumpOnSignal)
-                    pumpOnSignal["on"] += 1
-                this.cooling = true
-            } else if (this.tempProbe.value < (this.recipe["temperature"] - 2) && this.cooling) {
-                if (pumpOnSignal)
-                    pumpOnSignal["on"] -= 1
-                this.cooling = false
+            if(this.recipe) {
+                if (this.tempProbe.value > (this.recipe["temperature"] + 2) && !this.cooling) {
+                    if (pumpOnSignal)
+                        pumpOnSignal["on"] += 1
+                    this.cooling = true
+                } else if (this.tempProbe.value < (this.recipe["temperature"] - 2) && this.cooling) {
+                    if (pumpOnSignal)
+                        pumpOnSignal["on"] -= 1
+                    this.cooling = false
+                }
             }
             //check if jar is idling
             if (this.state !== "incubationPrep" && this.impellerMotor.state === "idle" && this.tempValve.state === "idle") {
@@ -132,10 +134,12 @@ class Jar {
 
     cancelRecipe() {
         this.state = "idle"
+        this.recipe = null
         this.impellerMotor.cancelCurrentQueue()
         this.valves.forEach((valve, _) => {
             valve["valve"].cancelCurrentQueue()
         })
+        clearInterval(this.incubatePrep)
     }
 }
 
