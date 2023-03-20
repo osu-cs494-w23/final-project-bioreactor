@@ -4,6 +4,7 @@ import FinalJar from "./components/FinalJar";
 import {useSelector} from "react-redux";
 import {getLocalStatus} from "./selectors";
 import MotorDevice from "./components/MotorDevice";
+import RecipeInput from "./components/RecipeInput";
 
 function App() {
     const deviceStatus = useSelector(getLocalStatus);
@@ -11,14 +12,13 @@ function App() {
     if(!deviceStatus || Object.keys(deviceStatus).length < 1)
         return
 
-    console.log(deviceStatus)
-
     let finalJarComponents = deviceStatus["finalJars"].map(jar => <FinalJar key={jar["name"]} jar={jar} socket={socket}/>)
     let ingredientPumpComponents = deviceStatus["startJars"].map(jar => <MotorDevice device={jar} deviceGroup={"startJars"} socket={socket} key={jar["name"]}/>)
 
     return (
         <div>
             sup lmao
+            <RecipeInput socket={socket}/>
             <MotorDevice device={deviceStatus["coolantMotor"]} deviceGroup={"coolantMotor"} socket={socket}/>
             {ingredientPumpComponents}
 

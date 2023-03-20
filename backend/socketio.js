@@ -3,6 +3,9 @@ const Server = require('socket.io')
 let io
 const machineSpecification = require("./machine_specification.json")
 const {machine, getAllStatuses} = require("./machine");
+let recipeList
+resetRecipeList()
+const fs = require('fs')
 
 function init(server) {
     console.log("server initializing")
@@ -20,7 +23,7 @@ function init(server) {
             callback({
                 "message": message
             })
-            socket.emit("echoTest2", ()=>{
+            socket.emit("echoTest2", () => {
                 console.log("returned from echoTest")
             })
         })
@@ -152,6 +155,86 @@ function init(server) {
             })
         })
 
+        socket.on('setRecipe', (newRecipe, callback) => {
+            callback = checkCallback(callback, socket.id, "setRecipe")
+            recipeList[newRecipe["name"]] = newRecipe
+            fs.writeFile("./recipes/" + newRecipe["name"] + ".json", JSON.stringify(newRecipe), (err) => {
+                if (err) {
+                    callback({
+                        "status": "error",
+                        "errorMessage": "Save failed with error: " + err
+                    })
+                    throw err
+                }
+                console.log("Recipe", newRecipe["name"], "has been saved");
+                updateRecipeListFile(callback)
+            })
+        })
+
+        socket.on('getRecipe', (recipeName, callback) => {
+            callback = checkCallback(callback, socket.id, "getRecipe")
+            let returningRecipe = recipeList[recipeName]
+            if (returningRecipe !== undefined && returningRecipe !== null) {
+                console.log("returning recipe:", returningRecipe)
+                callback({
+                    "status": "ok",
+                    "recipe": returningRecipe
+                })
+                return
+            }
+            callback({
+                "status": "error",
+                "errorMessage": "recipe not found"
+            })
+        })
+
+        socket.on('removeRecipe', (recipeName, callback) => {
+            callback = checkCallback(callback, socket.id, "removeRecipe")
+            let removingRecipe = recipeList[recipeName]
+            if (removingRecipe !== undefined && removingRecipe !== null) {
+                console.log("removing recipe:", removingRecipe)
+                delete recipeList[recipeName]
+                fs.unlink("recipes/" + recipeName + ".json", ()=>{
+                    callback({
+                        "status": "ok",
+                        "recipe": removingRecipe
+                    })
+                    updateRecipeListFile()
+                })
+                return
+            }
+            callback({
+                "status": "error",
+                "errorMessage": "recipe not found"
+            })
+        })
+
+        socket.on('getRecipeList', (callback) => {
+            callback = checkCallback(callback, socket.id, "getRecipeList")
+            callback({
+                "status": "ok",
+                "list": recipeList
+            })
+        })
+
+        socket.on('saveRecipe', (newRecipe, callback) => {
+            callback = checkCallback(callback, socket.id, "saveRecipe")
+            recipeList[newRecipe["name"]] = newRecipe
+            fs.writeFile("./recipes/" + newRecipe["name"] + ".json", newRecipe, (err) => {
+                if (err) {
+                    callback({
+                        "status": "error",
+                        "errorMessage": "Save failed with error: " + err
+                    })
+                    throw err
+                }
+                console.log("Recipe", newRecipe["name"], "has been saved");
+                callback({
+                    "status": "ok"
+                })
+            })
+        })
+
         socket.on('loadRecipe', (newRecipe, jarName, callback) => {
             callback = checkCallback(callback, socket.id, "loadRecipe")
             if (!machine["finalJars"].has(jarName)) {
@@ -163,6 +246,22 @@ function init(server) {
             }
 
             machine["finalJars"].get(jarName).setRecipe = newRecipe;
+            callback({
+                "status": "ok"
+            })
+        })
+
+        socket.on('loadRecipeFile', (newRecipe, jarName, callback) => {
+            callback = checkCallback(callback, socket.id, "loadRecipe")
+            if (!machine["finalJars"].has(jarName)) {
+                callback({
+                    "status": "error",
+                    "errorMessage": "Jar not found"
+                })
+                return
+            }
+
+            machine["finalJars"].get(jarName).setRecipe = JSON.parse(newRecipe.toString());
             callback({
                 "status": "ok"
             })
@@ -279,9 +378,33 @@ function init(server) {
 function checkCallback(callback, socketID, functionName) {
     if (typeof callback !== 'function') {
         console.log(socketID + " triggered " + functionName + " without providing a callback")
-        return (_) => {
-        }
+        return (_) => {}
     } else return callback
+}
+
+function resetRecipeList() {
+    recipeList = Object.fromEntries(require("./recipes/recipeList.json").map(fileName => {
+        let recipe = require("./recipes/" + fileName)
+        return [recipe.name, recipe]
+    }))
+}
+
+function updateRecipeListFile(callback){
+    if (typeof callback !== 'function') {
+        callback =  (_) => {}
+    }
+    fs.writeFile("./recipes/recipeList.json", "[\"" + Object.keys(recipeList).join("\",\"") + "\"]", (err) => {
+        if (err) {
+            callback({
+                "status": "error",
+                "errorMessage": "recipeList write file error: " + err
+            })
+            throw err
+        }
+        callback({
+            "status": "ok"
+        })
+    })
 }
 
 module.exports = {
