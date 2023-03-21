@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {validNumber} from "../data/regex";
 import InvalidMessage from "./InvalidMessage";
 
-const IngredientInput = ({setAmount, setIngredient, index, order = 1}) => {
+const IngredientInput = ({setAmount, setIngredient, index, removeIngredient}) => {
     const [onInvalid, SetOnInvalid] = useState(false);
 
     const handleChange = (e) => {
@@ -24,10 +24,14 @@ const IngredientInput = ({setAmount, setIngredient, index, order = 1}) => {
         setIngredient(index, e.target.value);
     };
 
+    const onRemoveHandler = (e) => {
+        removeIngredient(e, index)
+    }
+
     return (
         <>
             <div className="ingredient-input-container">
-                <div className="order-box">{order}</div>
+                <div className="order-box">{index + 1}</div>
                 <input
                     type="text"
                     required
@@ -44,6 +48,9 @@ const IngredientInput = ({setAmount, setIngredient, index, order = 1}) => {
                     placeholder="Amount"
                     onChange={handleChange}
                 />
+                <button onClick={onRemoveHandler}>
+                    Remove
+                </button>
             </div>
             {onInvalid && <InvalidMessage/>}
         </>

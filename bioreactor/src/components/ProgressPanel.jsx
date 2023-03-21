@@ -1,14 +1,17 @@
 import React, {useState} from "react";
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import MovingText from "react-moving-text";
+import {socket} from "../context/socket";
 
 const ProgressPanel = ({jar}) => {
     const [text, setText] = useState(jar.state);
     const [incubateReady, setIncubateReady] = useState(jar.incubateReady);
+    console.log("ProgressPanel jar", jar)
+    console.log("PrograssPanel state is ", jar.state)
 
     return (
         <>
-            {text == "idle" && !incubateReady && (
+            {jar.state == "idle" && !incubateReady && (
                 <div>
                     <MovingText
                         className="progress-text"
@@ -25,14 +28,16 @@ const ProgressPanel = ({jar}) => {
                     <button
                         style={{"margin-top": "2em"}}
                         onClick={() => {
-                            setIncubateReady(true);
+                            socket.emit("startIncubationPrep", jar.name, () => {
+                                setText(jar.state)
+                            })
                         }}
                     >
                         Start incubating
                     </button>
                 </div>
             )}
-            {text == "idle" && incubateReady && (
+            {jar.state == "idle" && incubateReady && (
                 <div>
                     <MovingText
                         className="progress-text"
@@ -56,7 +61,7 @@ const ProgressPanel = ({jar}) => {
                     </button>
                 </div>
             )}
-            {text == "running" && (
+            {jar.state == "running" && (
                 <div>
                     <MovingText
                         className="progress-text"
@@ -73,7 +78,7 @@ const ProgressPanel = ({jar}) => {
                     <ClimbingBoxLoader color="#FFBC00" size={25}/>
                 </div>
             )}
-            {text == "paused" && (
+            {jar.state == "paused" && (
                 <div>
                     PAUSED
                     <button>Restart</button>

@@ -1,60 +1,77 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import IngredientInput from "./IngredientInput";
-import {useDispatch} from "react-redux";
-import {selectAmounts, selectNames} from "../redux/actions";
+import { useDispatch } from "react-redux";
+import { selectAmounts, selectNames } from "../redux/actions";
 
-const Ingredients = () => {
-    const dispatch = useDispatch();
+const Ingredients = ({ recipe = { "": "" } }) => {
+  const dispatch = useDispatch();
 
-    const [state, setState] = useState([""]);
-    const [amounts, setAmounts] = useState([""]);
+  // I was trying to map all ingredients for edit form.
+  const [state, setState] = useState([Object.keys(recipe)]);
+  const [amounts, setAmounts] = useState([Object.values(recipe)]);
 
-    const addIngredient = () => {
-        setState([...state, ""]);
-        setAmount([...amounts, ""]);
-    };
+  const addIngredient = () => {
+    setState([...state, ""]);
+    setAmount([...amounts, ""]);
+  };
 
-    const setIngredient = (idx, value) => {
-        let temp = state;
-        temp[idx] = value;
-        setState(temp);
-        dispatch(selectNames(state));
-    };
+  // Remove
+  const removeIngredient = (e, idx) => {
+    e.preventDefault();
 
-    const setAmount = (idx, value) => {
-        let temp = amounts;
-        temp[idx] = value;
-        setAmounts(temp);
-        dispatch(selectAmounts(amounts));
-    };
+    var result = [];
 
-    return (
-        <div className="ingredient-container">
-            {state.map((el, index) => {
-                // console.log("Does it work?", state[index]);
-                console.log("Current State: ", state);
-                console.log("Current Amounts=== ", amounts);
-                return (
-                    <IngredientInput
-                        Ingredients={state}
-                        setIngredient={setIngredient}
-                        setAmount={setAmount}
-                        index={index}
-                    />
-                );
-            })}
-            <button
-                className="add-ingredient"
-                type="button"
-                onClick={(e) => {
-                    e.preventDefault();
-                    addIngredient();
-                }}
-            >
-                +
-            </button>
-        </div>
-    );
+    for (let i = 0; i < state.length; i++) {
+      if (i !== idx) {
+        result.push(state[i]);
+      }
+    }
+
+    setState(result);
+    console.log("Triggered!");
+  };
+
+  const setIngredient = (idx, value) => {
+    let temp = state;
+    temp[idx] = value;
+    setState(temp);
+    dispatch(selectNames(state));
+  };
+
+  const setAmount = (idx, value) => {
+    let temp = amounts;
+    temp[idx] = value;
+    setAmounts(temp);
+    dispatch(selectAmounts(amounts));
+  };
+
+  return (
+    <div className="ingredient-container">
+      {state.map((el, index) => {
+        // console.log("Does it work?", state[index]);
+        console.log("Current State: ", state);
+        console.log("Current Amounts=== ", amounts);
+        return (
+          <IngredientInput
+            setIngredient={setIngredient}
+            setAmount={setAmount}
+            index={index}
+            removeIngredient={removeIngredient}
+          />
+        );
+      })}
+      <button
+        className="add-ingredient"
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          addIngredient();
+        }}
+      >
+        +
+      </button>
+    </div>
+  );
 };
 
 export default Ingredients;
