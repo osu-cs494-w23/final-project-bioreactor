@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {FaShare} from "react-icons/fa";
 import {validNumber} from "../data/regex";
 import InvalidMessage from "./InvalidMessage";
+import {socket} from "../context/socket";
 
 const MotorPanel = ({device}) => {
     const [value, Setvalue] = useState(0);
@@ -10,27 +11,41 @@ const MotorPanel = ({device}) => {
     if (device === undefined)
         return
 
+    // console.log("MOTOR", device)
+
     const handleChange = (e) => {
         // If the input is invalid
         if (e.target.value === "") {
             SetOnInvalid(false);
             if (e.target.value > 1000) {
-                Setvalue(1000);
+                sendSpeedToSocket(1000);
 
             } else {
-                Setvalue(e.target.value);
+                sendSpeedToSocket(e.target.value);
             }
         } else if (!validNumber.test(e.target.value)) {
             SetOnInvalid(true);
         } else {
             SetOnInvalid(false);
             if (e.target.value > 1000) {
-                Setvalue(1000);
+                sendSpeedToSocket(1000);
             } else {
-                Setvalue(e.target.value);
+                sendSpeedToSocket(e.target.value);
             }
         }
     };
+
+    function sendSpeedToSocket(newSpeed){
+        let newSpeedNum = 0
+        if(typeof newSpeed === 'string')
+            newSpeedNum = parseInt(newSpeed)
+        socket.emit("setMotorSpeed", device.jarName, device.name, device.deviceGroup, newSpeedNum, (data) => {
+            if(data["status"] === "error"){
+                console.log("sendSpeedToSocket error:", data["errorMessage"])
+                return
+            }
+        })
+    }
 
     return (
         <div className="motor-panel">
@@ -49,13 +64,13 @@ const MotorPanel = ({device}) => {
                     min="0"
                     max="1000"
                     link-to="motor-manual-input"
-                    value={value}
+                    value={device.speed}
                     onInput={handleChange}
                 ></input>
                 <input
                     type="text"
                     id="motor-manual-input"
-                    value={value}
+                    value={device.speed}
                     onChange={handleChange}
                 ></input>
                 <button type="button" className="apply">

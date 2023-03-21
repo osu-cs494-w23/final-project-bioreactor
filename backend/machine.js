@@ -1,6 +1,6 @@
 const {Jar} = require("./jarClass");
 const {Motor} = require("./motorWrapper");
-let {pumpOnSignal, ingredientOnSignal} = require("./signals")
+let {states, ingredientOnSignal} = require("./states")
 
 const machineSpecification = require("./machine_specification.json")
 
@@ -11,6 +11,7 @@ let machine = {
             ingredientJar["pumpMotor"]["pin"],
             ingredientJar["ingredient"] + " pump",
             ingredientJar["ingredient"],
+            "startJars",
             machineSpecification["debug"]
         )]
     )),
@@ -18,6 +19,7 @@ let machine = {
         machineSpecification["coolantMotor"]["pin"],
         "coolantMotor",
         "coolant",
+        "coolantMotor",
         machineSpecification["debug"]
     )
 }
@@ -30,11 +32,12 @@ function getAllStatuses() {
     }
 }
 
+//automatic machine interval.
 setInterval(() => {
-    if (!machine) {
+    if (!machine || states.manual) {
         return
     }
-    if (pumpOnSignal["on"] > 0) {
+    if (states.pumpOnSignal > 0) {
         machine["coolantMotor"].Speed = 1000
     } else {
         machine["coolantMotor"].Speed = 0

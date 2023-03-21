@@ -13,13 +13,13 @@ function App() {
         return
 
     let finalJarComponents = deviceStatus["finalJars"].map(jar => <FinalJar key={jar["name"]} jar={jar} socket={socket}/>)
-    let ingredientPumpComponents = deviceStatus["startJars"].map(jar => <MotorDevice device={jar} deviceGroup={"startJars"} socket={socket} key={jar["name"]}/>)
+    let ingredientPumpComponents = deviceStatus["startJars"].map(jar => <MotorDevice device={jar} socket={socket} key={jar["name"]}/>)
 
     return (
         <div>
             sup lmao
             <RecipeInput socket={socket}/>
-            <MotorDevice device={deviceStatus["coolantMotor"]} deviceGroup={"coolantMotor"} socket={socket}/>
+            <MotorDevice device={deviceStatus["coolantMotor"]} socket={socket}/>
             {ingredientPumpComponents}
 
             <div className={css`display: flex`}>

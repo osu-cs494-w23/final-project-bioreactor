@@ -3,6 +3,7 @@ const Server = require('socket.io')
 let io
 const machineSpecification = require("./machine_specification.json")
 const {machine, getAllStatuses} = require("./machine");
+let {states} = require("./states")
 let recipeList
 resetRecipeList()
 const fs = require('fs')
@@ -47,7 +48,7 @@ function init(server) {
 
         socket.on('setMotorSpeed', (jarName, deviceName, deviceGroup, newSpeed, callback) => {
             callback = checkCallback(callback, socket.id, "setMotorSpeed")
-            console.log("received new speed: ", newSpeed, " for ", deviceName, " of ", jarName)
+            // console.log("received new speed: ", newSpeed, " for ", deviceName, " of ", jarName)
             switch (deviceGroup) {
                 case "coolantMotor":
                     machine["coolantMotor"].Speed = newSpeed
@@ -56,23 +57,25 @@ function init(server) {
                         "newSpeed": newSpeed
                     })
                     break
-                case "startJars":
-                    if (machine["startJars"].some(motor => {
+                case "startJars": {
+                    let hasMotor = false
+                    machine["startJars"].forEach(motor => {
                         if (motor.name === deviceName) {
                             motor.Speed = newSpeed
                             callback({
                                 "status": "ok",
                                 "newSpeed": newSpeed
                             })
-                            return true
+                            hasMotor = true
                         }
-                    }))
-                        break
-                    callback({
-                        "status": "error",
-                        "errorMessage": "device not found"
                     })
+                    if(!hasMotor)
+                        callback({
+                            "status": "error",
+                            "errorMessage": "device not found"
+                        })
                     break
+                }
                 case "finalJars":
                     if (machine["finalJars"].has(jarName)) {
                         let currentJar = machine["finalJars"].get(jarName)
@@ -309,6 +312,13 @@ function init(server) {
                 return
             }
 
+            if(states.manual){
+                callback({
+                    "status": "error",
+                    "errorMessage": "machine is in manual mode"
+                })
+                return
+            }
 
             currentJar.startRecipe()
             callback({
@@ -370,6 +380,34 @@ function init(server) {
             currentJar.cancelRecipe()
             callback({
                 "status": "ok"
+            })
+        })
+        socket.on("setManual", (manualState, callback) => {
+            callback = checkCallback(callback, socket.id, "setManual")
+            let machineIdle = true;
+            machine["finalJars"].forEach((jar)=>{
+                if(jar.state !== "idle"){
+                    machineIdle = false
+                }
+            })
+            if(!machineIdle) {
+                callback({
+                    "status": "error",
+                    "errorMessage": "Machine is still busy"
+                })
+                return
+            }
+            console.log("setting manual state to", manualState)
+            states.manual = manualState
+            callback({
+                "status": "ok"
+            })
+        })
+
+        socket.on("getManual", (callback) => {
+            callback({
+                "status": "ok",
+                "manual": states.manual
             })
         })
     })

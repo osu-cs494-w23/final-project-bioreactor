@@ -119,12 +119,12 @@ function FinalJar({jar, socket}) {
             <p>Ready for incubation: {jar.incubateReady ? "true" : "false"}</p>
             <p>Receiving cooling: {jar.cooling ? "true" : "false"}</p>
             <div className={css`display: flex; flex-wrap: wrap`}>
-                <MotorDevice device={jar.impellerMotor} deviceGroup={"finalJars"} socket={socket}/>
+                <MotorDevice device={jar.impellerMotor} socket={socket}/>
                 {jar.valves.map((valve) =>
-                    <ValveDevice key={valve["name"]} device={valve} deviceGroup={"ingredientValve"} socket={socket}/>
+                    <ValveDevice key={valve["name"]} device={valve} socket={socket}/>
                 )}
-                <ValveDevice device={jar.tempValve} deviceGroup={"tempValve"} socket={socket}/>
-                <SensorDevice device={jar.tempProbe} deviceGroup={"tempProbe"} socket={socket}/>
+                <ValveDevice device={jar.tempValve} socket={socket}/>
+                <SensorDevice device={jar.tempProbe} socket={socket}/>
             </div>
         </div>
     )

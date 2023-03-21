@@ -1,12 +1,26 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import MotorPanel from "../components/MotorPanel";
 import ValvePanel from "../components/ValvePanel";
 import IngredientControlPanel from "../components-control/IngredientControlPanel";
 import {useSelector} from "react-redux";
 import {getLocalStatus} from "../redux/selectors";
+import {socket} from "../context/socket";
 
 const Manual = () => {
     const deviceStatus = useSelector(getLocalStatus);
+    const [manualState, setManualState] = useState(false)
+
+    useEffect(()=>{
+        if(socket !== undefined)
+        socket.emit("getManual", (data) => {
+            if(data["status"] === "error"){
+                console.log("getManual error:", data["errorMessage"])
+                return
+            }
+            setManualState(data["manual"])
+        })
+    }, [socket])
+
     if (!deviceStatus.startJars[0]) {
         return;
     }
@@ -14,10 +28,22 @@ const Manual = () => {
     if (!deviceStatus.finalJars[0]) {
         return;
     }
-    console.log(deviceStatus.coolantMotor)
+
+    function handleManualToggle(){
+        if(socket !== undefined)
+        socket.emit("setManual", !manualState, (data) => {
+            if(data["status"] === "error"){
+                console.log("setManual error:", data["errorMessage"])
+                return
+            }
+            setManualState(!manualState)
+        })
+    }
+
     return (
         <>
             <div className="manual-container">
+                <button onClick={handleManualToggle}>{manualState ? "Disengage manual mode" : "Engage manual mode"}</button>
                 <div>
                     <h1 className="control-topic">Ingredients</h1>
                     <div className="ingredient">

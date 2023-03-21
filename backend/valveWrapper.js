@@ -1,4 +1,4 @@
-let {ingredientOnSignal, pumpOnSignal} = require("./signals");
+let {states, ingredientOnSignal} = require("./states");
 
 class Valve {
     // motor's actionQueue's structure:
@@ -55,9 +55,9 @@ class Valve {
                     break
                 case "tempValve":
                     if(newState){
-                        pumpOnSignal["on"] += 1
+                        states.pumpOnSignal += 1
                     } else {
-                        pumpOnSignal["on"] -= 1
+                        states.pumpOnSignal -= 1
                     }
             }
         }

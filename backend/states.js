@@ -1,6 +1,9 @@
 const machineSpecification = require("./machine_specification.json");
-let pumpOnSignal = {
-    "on": 0
+
+//only objects are passed by reference so I'm doing it like this
+let states = {
+    "pumpOnSignal": 0,
+    "manual": false
 }
 
 let ingredientOnSignal = Object.fromEntries(machineSpecification["startJars"].map(ingredientJar => {
@@ -8,6 +11,6 @@ let ingredientOnSignal = Object.fromEntries(machineSpecification["startJars"].ma
 }))
 
 module.exports = {
-    pumpOnSignal: pumpOnSignal,
-    ingredientOnSignal: ingredientOnSignal
+    states: states,
+    ingredientOnSignal: ingredientOnSignal,
 }

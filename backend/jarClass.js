@@ -2,7 +2,7 @@ const {Motor} = require("./motorWrapper");
 const {Valve} = require("./valveWrapper");
 const {Sensor} = require("./sensorWrapper");
 const machineSpecification = require("./machine_specification.json")
-let {pumpOnSignal} = require("./signals")
+let {states} = require("./states")
 
 class Jar {
     recipe
@@ -17,7 +17,7 @@ class Jar {
         this.debug = machineSpecification["debug"]
         this.specification = machineSpecification["finalJars"][name]
         let motorSpec = this.specification["impellerMotor"]
-        this.impellerMotor = new Motor(motorSpec["pin"], motorSpec["name"], name, this.debug)
+        this.impellerMotor = new Motor(motorSpec["pin"], motorSpec["name"], name, "finalJars", this.debug)
 
         this.valves = new Map(this.specification["valves"].map(
             individualValve => [
@@ -38,7 +38,7 @@ class Jar {
         this.tempValve = new Valve(this.specification["tempValve"]["pin"], name + "TempValve", name, "coolantJar", "tempValve",
         this.debug
     )
-        this.tempProbe = new Sensor(this.specification["tempProbe"]["pin"], name + "TempProbe", name, this.debug)
+        this.tempProbe = new Sensor(this.specification["tempProbe"]["pin"], name + "TempProbe", name, "tempProbe", this.debug)
     }
 
     set setRecipe(newRecipe) {
@@ -85,12 +85,12 @@ class Jar {
             //determine if the cooling motor needs to run or not
             if(this.recipe) {
                 if (this.tempProbe.value > (this.recipe["temperature"] + 2) && !this.cooling) {
-                    if (pumpOnSignal)
-                        pumpOnSignal["on"] += 1
+                    if (states.pumpOnSignal)
+                        states.pumpOnSignal += 1
                     this.cooling = true
                 } else if (this.tempProbe.value < (this.recipe["temperature"] - 2) && this.cooling) {
-                    if (pumpOnSignal)
-                        pumpOnSignal["on"] -= 1
+                    if (states.pumpOnSignal)
+                        states.pumpOnSignal -= 1
                     this.cooling = false
                 }
             }
