@@ -1,14 +1,34 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import datas from "../data/sample.json";
 import {FaSearch} from "react-icons/fa";
 import {useDispatch} from "react-redux";
 import {selectRecipe} from "../redux/actions";
+import {socket} from "../context/socket";
 
 const Sidebar = ({onClickHandler}) => {
     const initialData = datas;
 
+    const initialTestData = []
     const dispatch = useDispatch();
-    const [result, setResult] = useState(initialData)
+    const [result, setResult] = useState(initialTestData)
+
+    console.log("Socket is", socket)
+
+    useEffect(()=>{
+        if(socket !== undefined)
+            socket.emit("getRecipeList", (data) => {
+                if(data["status"] === "error"){
+                    console.log("getManual error:", data["errorMessage"])
+                    return
+                }
+                if(data["list"] === {}) {
+                    setResult([])
+                }
+                else {
+                    setResult(Object.values(data["list"]))
+                }
+            })
+    }, [socket, initialTestData])
 
     const onChangeHandler = (e) => {
         e.preventDefault()
@@ -19,6 +39,8 @@ const Sidebar = ({onClickHandler}) => {
         console.log("HERE!!!")
         setResult(initialData.filter(data => data.name.includes(e.target.value)))
     }
+
+    console.log("Result is ", result)
 
     return (
         <div className="sidebar">
@@ -36,21 +58,22 @@ const Sidebar = ({onClickHandler}) => {
                 </button>
             </div>
             <div className="recipe-list">
-                {result.map((data) => {
-                    return (
-                        <li key={data.name}>
-                            <button
-                                className="recipe-link"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(selectRecipe(data));
-                                }}
-                            >
-                                {data.name}
-                            </button>
-                        </li>
-                    );
-                })}
+                {!(Object.keys(result).length === 0) && (result.map((data) => {
+                        return (
+                            <li key={data.name}>
+                                <button
+                                    className="recipe-link"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(selectRecipe(data));
+                                    }}
+                                >
+                                    {data.name}
+                                </button>
+                            </li>
+                        );
+                    }))}
+
             </div>
             <button className="add-button" onClick={onClickHandler}>
                 + Add Recipe

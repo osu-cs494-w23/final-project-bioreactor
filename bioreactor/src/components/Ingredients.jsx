@@ -7,8 +7,8 @@ const Ingredients = ({ recipe = { "": "" } }) => {
   const dispatch = useDispatch();
 
   // I was trying to map all ingredients for edit form.
-  const [state, setState] = useState([Object.keys(recipe)]);
-  const [amounts, setAmounts] = useState([Object.values(recipe)]);
+  const [state, setState] = useState(Object.keys(recipe));
+  const [amounts, setAmounts] = useState(Object.values(recipe));
 
   const addIngredient = () => {
     setState([...state, ""]);
@@ -57,6 +57,8 @@ const Ingredients = ({ recipe = { "": "" } }) => {
             setAmount={setAmount}
             index={index}
             removeIngredient={removeIngredient}
+            ingredientNameValue={state[index]}
+            ingredientAmountValue={amounts[index]}
           />
         );
       })}

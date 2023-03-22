@@ -8,6 +8,7 @@ import {NavLink} from "react-router-dom";
 import {FaAngleLeft} from "react-icons/fa";
 import {useSelector} from "react-redux";
 import {getRecipe} from "../redux/selectors";
+import {socket} from "../context/socket";
 
 const Manage = () => {
     const [onAdd, setOnAdd] = useState(false);
@@ -36,19 +37,19 @@ const Manage = () => {
             <Sidebar onClickHandler={onClickHandler}/>
             {onAdd && (
                 <>
-                    <AddForm onClickHandler={onClickHandler}/>
+                    <AddForm onClickHandler={onClickHandler} setOnAdd={setOnAdd}/>
                     <div className="backscreen"></div>
                 </>
             )}
             {onEdit && (
                 <>
-                    <EditForm onClickHandler={onEditHandler}/>
+                    <EditForm onClickHandler={onEditHandler} setOnEdit={setOnEdit}/>
                     <div className="backscreen"></div>
                 </>
             )}
             {onDelete && (
                 <>
-                    <DeleteWarning onClickHandler={onDeleteHandler}/>
+                    <DeleteWarning onClickHandler={onDeleteHandler} setOnDelete={setOnDelete} selectedRecipe={selectedRecipe}/>
                     <div className="backscreen"></div>
                 </>
             )}
