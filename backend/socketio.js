@@ -4,9 +4,9 @@ let io
 const machineSpecification = require("./machine_specification.json")
 const {machine, getAllStatuses} = require("./machine");
 let {states} = require("./states")
+const fs = require('fs')
 let recipeList
 resetRecipeList()
-const fs = require('fs')
 
 function init(server) {
     console.log("server initializing")
@@ -422,9 +422,14 @@ function checkCallback(callback, socketID, functionName) {
 
 function resetRecipeList() {
     recipeList = Object.fromEntries(require("./recipes/recipeList.json").map(fileName => {
-        let recipe = require("./recipes/" + fileName)
-        return [recipe.name, recipe]
-    }))
+        if(fs.existsSync("./recipes/" + fileName)) {
+            let recipe = require("./recipes/" + fileName)
+            return [recipe.name, recipe]
+        } else {
+            console.log("recipe file not found:", "./recipes/" + fileName)
+            return []
+        }
+    }).filter(element => element.length > 0))
 }
 
 function updateRecipeListFile(callback){
