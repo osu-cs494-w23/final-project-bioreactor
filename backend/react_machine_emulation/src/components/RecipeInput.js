@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {css} from "@emotion/css";
 
-function RecipeInput({socket}) {
+function RecipeInput({socket, allRecipes, setAllRecipes}) {
     const [enteredJSON, setEnteredJSON] = useState("")
     const [returnedRecipe, setReturnedRecipe] = useState({});
-    const [allRecipes, setAllRecipes] = useState([])
     const [removingRecipe, setRemovingRecipe] = useState("")
 
 

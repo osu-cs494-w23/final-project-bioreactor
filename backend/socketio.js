@@ -238,7 +238,7 @@ function init(server) {
             })
         })
 
-        socket.on('loadRecipe', (newRecipe, jarName, callback) => {
+        socket.on('loadRecipe', (recipeName, jarName, callback) => {
             callback = checkCallback(callback, socket.id, "loadRecipe")
             if (!machine["finalJars"].has(jarName)) {
                 callback({
@@ -248,7 +248,15 @@ function init(server) {
                 return
             }
 
-            machine["finalJars"].get(jarName).setRecipe = newRecipe;
+            if(!recipeList[recipeName]){
+                callback({
+                    "status": "error",
+                    "errorMessage": "Recipe not found"
+                })
+                return
+            }
+
+            machine["finalJars"].get(jarName).setRecipe = recipeList[recipeName];
             callback({
                 "status": "ok"
             })
