@@ -10,6 +10,10 @@ export function getRecipe(state) {
     return state.recipe || null;
 }
 
+export function getRecipeList(state){
+    return state.recipeList
+}
+
 export function getLocalStatus(state) {
     return state.machineStatus || null;
 }

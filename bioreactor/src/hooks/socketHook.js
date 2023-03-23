@@ -18,6 +18,15 @@ export function useSocket(timeout) {
                         });
                     }
                 });
+                socket.emit("getRecipeList", (data) => {
+                    if (data["status"] === "ok") {
+                        // console.log("received statuses: ", data)
+                        dispatch({
+                            type: "UPDATE_RECIPE_LIST",
+                            recipeList: data["list"],
+                        });
+                    }
+                });
             }
         }, timeout);
 

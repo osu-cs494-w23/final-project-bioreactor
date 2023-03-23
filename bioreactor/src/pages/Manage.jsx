@@ -34,7 +34,7 @@ const Manage = () => {
 
     return (
         <div className="manage-page">
-            <Sidebar onClickHandler={onClickHandler}/>
+            <Sidebar onClickHandler={onClickHandler} socket={socket}/>
             {onAdd && (
                 <>
                     <AddForm onClickHandler={onClickHandler} setOnAdd={setOnAdd}/>

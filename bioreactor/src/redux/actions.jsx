@@ -18,3 +18,7 @@ export function selectNames(names) {
 export function selectAmounts(amounts) {
     return {type: SELECT_AMOUNTS, amounts};
 }
+
+export function setRecipeList(recipeList){
+    return {type: "UPDATE_RECIPE_LIST", recipeList}
+}

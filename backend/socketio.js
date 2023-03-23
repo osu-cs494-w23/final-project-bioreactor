@@ -20,6 +20,7 @@ function init(server) {
         console.log("connection initialized by id: ", socket.id)
 
         socket.on("echoTest", (message, callback) => {
+            callback = checkCallback(callback, socket.id, "echoTest")
             console.log(message)
             callback({
                 "message": message
@@ -430,11 +431,11 @@ function checkCallback(callback, socketID, functionName) {
 
 function resetRecipeList() {
     recipeList = Object.fromEntries(require("./recipes/recipeList.json").map(fileName => {
-        if(fs.existsSync("./recipes/" + fileName)) {
+        if(fs.existsSync("./recipes/" + fileName + ".json")) {
             let recipe = require("./recipes/" + fileName)
             return [recipe.name, recipe]
         } else {
-            console.log("recipe file not found:", "./recipes/" + fileName)
+            console.log("recipe file not found:", "./recipes/" + fileName + ".json")
             return []
         }
     }).filter(element => element.length > 0))

@@ -66,7 +66,7 @@ const Selection = ({socket}) => {
                     <div className="backscreen"></div>
                 </>
             )}
-            <Sidebar onClickHandler={onClickHandler}/>
+            <Sidebar onClickHandler={onClickHandler} socket={socket}/>
             <div className="rightside">
                 <div className="back-container">
                     <NavLink to="/" className="back">

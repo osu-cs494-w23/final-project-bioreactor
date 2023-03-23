@@ -129,7 +129,7 @@ function statusReducer(
             }
             break;
         default:
-            console.log("redux defaulting");
+            // console.log("redux defaulting");
             return machineStatus;
     }
 }
