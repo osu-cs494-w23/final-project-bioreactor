@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import Sidebar from "../components/Sidebar";
 import RecipePanel from "../components/RecipePanel";
 import AddForm from "../components/AddForm";
@@ -6,17 +6,26 @@ import EditForm from "../components/EditForm";
 import DeleteWarning from "../components/DeleteWarning";
 import {NavLink} from "react-router-dom";
 import {FaAngleLeft} from "react-icons/fa";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getRecipe} from "../redux/selectors";
 import {socket} from "../context/socket";
+import {selectRecipe} from "../redux/actions";
 
 const Manage = () => {
+    const dispatch = useDispatch()
     const [onAdd, setOnAdd] = useState(false);
     const [onEdit, setOnEdit] = useState(false);
     const [onDelete, setOnDelete] = useState(false);
 
-    const onClickHandler = () => {
-        setOnAdd(!onAdd);
+    const onAddRecipe = () => {
+        setOnAdd(true);
+        dispatch(selectRecipe({
+            name: "",
+            time: undefined,
+            motorSpeed: undefined,
+            temperature: undefined,
+            ingredients: undefined,
+        }))
     };
     const onEditHandler = () => {
         setOnEdit(!onEdit);
@@ -34,22 +43,23 @@ const Manage = () => {
 
     return (
         <div className="manage-page">
-            <Sidebar onClickHandler={onClickHandler} socket={socket}/>
+            <Sidebar onAddRecipe={onAddRecipe} socket={socket}/>
             {onAdd && (
                 <>
-                    <AddForm onClickHandler={onClickHandler} setOnAdd={setOnAdd}/>
+                    <AddForm setOnAdd={setOnAdd}/>
                     <div className="backscreen"></div>
                 </>
             )}
             {onEdit && (
                 <>
-                    <EditForm onClickHandler={onEditHandler} setOnEdit={setOnEdit}/>
+                    <EditForm setOnEdit={setOnEdit}/>
                     <div className="backscreen"></div>
                 </>
             )}
             {onDelete && (
                 <>
-                    <DeleteWarning onClickHandler={onDeleteHandler} setOnDelete={setOnDelete} selectedRecipe={selectedRecipe}/>
+                    <DeleteWarning onClickHandler={onDeleteHandler} setOnDelete={setOnDelete}
+                                   selectedRecipe={selectedRecipe}/>
                     <div className="backscreen"></div>
                 </>
             )}

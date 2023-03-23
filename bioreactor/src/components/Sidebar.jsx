@@ -1,17 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {FaSearch} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {selectRecipe} from "../redux/actions";
-import {socket} from "../context/socket";
 import {getRecipeList} from "../redux/selectors";
 
-const Sidebar = ({onClickHandler, recipes, socket}) => {
+const Sidebar = ({onAddRecipe}) => {
     const dispatch = useDispatch();
     const recipeList = useSelector(getRecipeList)
     const [result, setResult] = useState([])
     const [filterText, setFilterText] = useState("")
 
-    useEffect(()=>{
+    useEffect(() => {
         let recipeListToValues = Object.values(recipeList)
         setResult(recipeListToValues)
         if (filterText === "") {
@@ -45,23 +44,23 @@ const Sidebar = ({onClickHandler, recipes, socket}) => {
             </div>
             <div className="recipe-list">
                 {!(Object.keys(result).length === 0) && (result.map((data) => {
-                        return (
-                            <li key={data.name}>
-                                <button
-                                    className="recipe-link"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        dispatch(selectRecipe(data));
-                                    }}
-                                >
-                                    {data.name}
-                                </button>
-                            </li>
-                        );
-                    }))}
+                    return (
+                        <li key={data.name}>
+                            <button
+                                className="recipe-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(selectRecipe(data));
+                                }}
+                            >
+                                {data.name}
+                            </button>
+                        </li>
+                    );
+                }))}
 
             </div>
-            <button className="add-button" onClick={onClickHandler}>
+            <button className="add-button" onClick={onAddRecipe}>
                 + Add Recipe
             </button>
         </div>

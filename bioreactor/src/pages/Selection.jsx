@@ -7,17 +7,26 @@ import EditForm from "../components/EditForm";
 import DeleteWarning from "../components/DeleteWarning";
 import {NavLink} from "react-router-dom";
 import {FaAngleLeft} from "react-icons/fa";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getJarName, getRecipe} from "../redux/selectors";
+import {selectRecipe} from "../redux/actions";
 
 const Selection = ({socket}) => {
+    const dispatch = useDispatch
     const [onSummary, SetOnSummary] = useState(false);
     const [onAdd, setOnAdd] = useState(false);
     const [onEdit, setOnEdit] = useState(false);
     const [onDelete, setOnDelete] = useState(false);
 
-    const onClickHandler = () => {
+    const onAddRecipe = () => {
         setOnAdd(!onAdd);
+        dispatch(selectRecipe({
+            name: "",
+            time: undefined,
+            motorSpeed: undefined,
+            temperature: undefined,
+            ingredients: undefined,
+        }))
     };
     const onEditHandler = () => {
         setOnEdit(!onEdit);
@@ -50,13 +59,13 @@ const Selection = ({socket}) => {
             )}
             {onAdd && (
                 <>
-                    <AddForm onClickHandler={onClickHandler}/>
+                    <AddForm onCancelHandler={setOnAdd}/>
                     <div className="backscreen"></div>
                 </>
             )}
             {onEdit && (
                 <>
-                    <EditForm onClickHandler={onEditHandler}/>
+                    <EditForm setOnEdit={setOnEdit}/>
                     <div className="backscreen"></div>
                 </>
             )}
@@ -66,7 +75,7 @@ const Selection = ({socket}) => {
                     <div className="backscreen"></div>
                 </>
             )}
-            <Sidebar onClickHandler={onClickHandler} socket={socket}/>
+            <Sidebar onAddRecipe={onAddRecipe} socket={socket}/>
             <div className="rightside">
                 <div className="back-container">
                     <NavLink to="/" className="back">

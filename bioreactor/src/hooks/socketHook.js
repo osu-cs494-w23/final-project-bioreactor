@@ -16,6 +16,8 @@ export function useSocket(timeout) {
                             type: "UPDATE_WHOLE_STATUS",
                             newStatus: data["machine"],
                         });
+                    } else {
+                        console.log("getAllStatuses:", data["errorMessage"])
                     }
                 });
                 socket.emit("getRecipeList", (data) => {
@@ -25,6 +27,8 @@ export function useSocket(timeout) {
                             type: "UPDATE_RECIPE_LIST",
                             recipeList: data["list"],
                         });
+                    } else {
+                        console.log("getRecipeList:", data["errorMessage"])
                     }
                 });
             }
@@ -32,15 +36,6 @@ export function useSocket(timeout) {
 
         socket.on("connect", () => {
             console.log("connected to server");
-            socket.emit("getAllStatuses", (data) => {
-                if (data["status"] === "ok") {
-                    dispatch({
-                        type: "UPDATE_WHOLE_STATUS",
-                        newStatus: data["machine"],
-                    });
-                    console.log("received machine status: ", data["machine"]);
-                }
-            });
         });
 
         socket.on("disconnect", () => {

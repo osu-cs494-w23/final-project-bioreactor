@@ -1,12 +1,17 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {socket} from "../context/socket";
+import {notifyBad} from "../notify";
 
 const Summary = ({onClickHandler, recipe, jarName}) => {
     const navigate = useNavigate();
 
     const loadRecipe = () => {
-        socket.emit("loadRecipe", recipe.name, jarName);
+        socket.emit("loadRecipe", recipe.name, jarName, (data) => {
+            if (data["status"] === "error") {
+                notifyBad(data["errorMessage"])
+            }
+        });
         navigate("main");
     };
 
@@ -16,12 +21,12 @@ const Summary = ({onClickHandler, recipe, jarName}) => {
             <div className="summary-container">
                 <div className="left-summary">
                     <div className="recipe-name">Recipe Name: {recipe.name}</div>
-                    <hr />
+                    <hr/>
                     <div>Total Time: {recipe.time}</div>
                     <div>Temperature: {recipe.temperature}</div>
                     <div>Motor RPM: {recipe.motorSpeed}</div>
-                    <hr />
-                    <div>Required ingredient: </div>
+                    <hr/>
+                    <div>Required ingredient:</div>
                     <ul>
                         {Object.keys(recipe.ingredients).map((el, idx) => {
                             return <li key={el}>{el}: {Object.values(recipe.ingredients)[idx]} ml</li>
@@ -30,17 +35,17 @@ const Summary = ({onClickHandler, recipe, jarName}) => {
                 </div>
                 <div className="right-summary">
                     <div>Please check these before start:</div>
-                    <hr />
+                    <hr/>
                     <div className="regular">
                         <div>Make sure your device is ready.</div>
                         <div>Make sure your valves are ready.</div>
                         <div>Make sure your motors are ready.</div>
-                        <hr />
+                        <hr/>
                         <div>Check the amount of the cool water.</div>
                         <div>Prepare all ingredients that you need.</div>
-                        <hr />
+                        <hr/>
                         <div>While your jars are in progress, you cannot control the devices manually.</div>
-                        <hr />
+                        <hr/>
                         <div>If all things are set up, load your recipe.</div>
                     </div>
                 </div>

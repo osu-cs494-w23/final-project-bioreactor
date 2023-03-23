@@ -1,13 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import BounceLoader from "react-spinners/BounceLoader";
 import HashLoader from "react-spinners/HashLoader";
 import MovingText from "react-moving-text";
 import {socket} from "../context/socket";
 import ToggleButton from "./ToggleButton";
+import {notifyBad} from "../notify";
 
 const ProgressPanel = ({jar}) => {
-    const [text, setText] = useState(jar.state);
 
     const override = {
         margin: "auto"
@@ -32,8 +32,11 @@ const ProgressPanel = ({jar}) => {
                     <ToggleButton
                         className="progress-button"
                         onClick={() => {
-                            socket.emit("startIncubationPrep", jar.name, () => {
-                                console.log("TEST")
+                            socket.emit("startIncubationPrep", jar.name, (data) => {
+                                if (data["status"] === "error") {
+                                    notifyBad(data["errorMessage"])
+                                }
+                                console.log("start incubation prep for", jar.name)
                             })
                         }}
                     >
@@ -68,7 +71,8 @@ const ProgressPanel = ({jar}) => {
                     >
                         Required Temp: {jar.recipe.temperature} °F
                     </MovingText>
-                    <div className="loading-bar"><ClimbingBoxLoader color="#59CB59" cssOverride={override} size={25}/></div>
+                    <div className="loading-bar"><ClimbingBoxLoader color="#59CB59" cssOverride={override} size={25}/>
+                    </div>
                     {!jar.incubateReady && jar.cooling && <MovingText
                         className="progress-text"
                         type="fadeInFromBottom"
@@ -79,7 +83,7 @@ const ProgressPanel = ({jar}) => {
                         iteration="1"
                         fillMode="none"
                     >
-                        The temperature is too high.<br />
+                        The temperature is too high.<br/>
                         Cooling this jar is in progress...
                     </MovingText>}
                     {!jar.incubateReady && !jar.cooling && <MovingText
@@ -92,7 +96,7 @@ const ProgressPanel = ({jar}) => {
                         iteration="1"
                         fillMode="none"
                     >
-                        The temperature is too low.<br />
+                        The temperature is too low.<br/>
                         Heating this jar is in progress...
                     </MovingText>}
                 </div>
@@ -126,9 +130,11 @@ const ProgressPanel = ({jar}) => {
                     <ToggleButton
                         className="progress-button"
                         onClick={() => {
-                            socket.emit("startRecipe", jar.name, () => {
-                                setText(jar.state)
-                                console.log("Hello?")
+                            socket.emit("startRecipe", jar.name, (data) => {
+                                if (data["status"] === "error") {
+                                    notifyBad(data["errorMessage"])
+                                }
+                                console.log("start recipe for", jar.name)
                             })
                         }}
                     >
@@ -154,29 +160,41 @@ const ProgressPanel = ({jar}) => {
                     <ToggleButton
                         className="progress-button"
                         onClick={() => {
-                        socket.emit("pauseRecipe", jar.name)}
-                    }>Pause</ToggleButton>
+                            socket.emit("pauseRecipe", jar.name, (data) => {
+                                if (data["status"] === "error") {
+                                    notifyBad(data["errorMessage"])
+                                }
+                            })
+                        }
+                        }>Pause</ToggleButton>
                 </div>
             )}
             {jar.state === "paused" && (
-                <><div className="progress-panel">
-                    <MovingText
-                        className="progress-text"
-                        type="fadeInFromBottom"
-                        duration="1000ms"
-                        delay="0s"
-                        direction="normal"
-                        timing="ease"
-                        iteration="1"
-                        fillMode="none"
-                    >
-                        Paused
-                    </MovingText>
-                    <div className="loading-bar"><BounceLoader color="#FFBC00" cssOverride={override} size={100}/></div>
-                    <ToggleButton className="progress-button" onClick={() => {
-                        socket.emit("startRecipe", jar.name)}
-                    }>Restart</ToggleButton>
-                </div>
+                <>
+                    <div className="progress-panel">
+                        <MovingText
+                            className="progress-text"
+                            type="fadeInFromBottom"
+                            duration="1000ms"
+                            delay="0s"
+                            direction="normal"
+                            timing="ease"
+                            iteration="1"
+                            fillMode="none"
+                        >
+                            Paused
+                        </MovingText>
+                        <div className="loading-bar"><BounceLoader color="#FFBC00" cssOverride={override} size={100}/>
+                        </div>
+                        <ToggleButton className="progress-button" onClick={() => {
+                            socket.emit("startRecipe", jar.name, (data) => {
+                                if (data["status"] === "error") {
+                                    notifyBad(data["errorMessage"])
+                                }
+                            })
+                        }
+                        }>Restart</ToggleButton>
+                    </div>
                 </>
             )}
         </div>

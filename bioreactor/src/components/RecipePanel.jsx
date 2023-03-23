@@ -4,8 +4,12 @@ import {getRecipe} from "../redux/selectors";
 
 const RecipePanel = ({onClickEdit, onClickDelete}) => {
     const selectedRecipe = useSelector(getRecipe);
-    const ingredients = Object.keys(selectedRecipe.ingredients);
-    const amounts = Object.values(selectedRecipe.ingredients);
+    let ingredients = []
+    let amounts = []
+    if (selectedRecipe.ingredients) {
+        ingredients = Object.keys(selectedRecipe.ingredients);
+        amounts = Object.values(selectedRecipe.ingredients);
+    }
     // console.log(ingredients);
 
     return (
@@ -42,7 +46,11 @@ const RecipePanel = ({onClickEdit, onClickDelete}) => {
                         <div className="bold card-subject">Required ingredient</div>
                         <ul className="card-value list">
                             {ingredients.map((igd, idx) => {
-                                return <li className="ingredient-list" key={igd}><div className="number">{idx + 1}</div><div>{igd}</div><div>{amounts[idx]} ml</div></li>;
+                                return <li className="ingredient-list" key={igd}>
+                                    <div className="number">{idx + 1}</div>
+                                    <div>{igd}</div>
+                                    <div>{amounts[idx]} ml</div>
+                                </li>;
                             })}
                         </ul>
                     </div>

@@ -10,9 +10,6 @@ import Manual from "./pages/Manual";
 
 function App() {
     let socket = useSocket(500);
-    if (socket) {
-        socket.emit("echoTest", "CONNECTION");
-    }
     return (
         <>
             <Navbar/>
@@ -27,7 +24,7 @@ function App() {
                         element={<Manage socket={socket}/>}
                     ></Route>
                     <Route path="/about" element={<About/>}/>
-                    <Route path="/about/:lang" element={<About />}/>
+                    <Route path="/about/:lang" element={<About/>}/>
                     <Route path="/load" element={<Selection socket={socket}/>}/>
                     <Route
                         path="/manual/load"

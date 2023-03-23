@@ -1,93 +1,125 @@
-import React, { useState } from "react";
+import React from "react";
 import IngredientInput from "./IngredientInput";
-import { useDispatch } from "react-redux";
-import { selectAmounts, selectNames } from "../redux/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {selectRecipe} from "../redux/actions";
+import {getLocalStatus, getRecipe} from "../redux/selectors";
 
-const Ingredients = ({ recipe = { "": "" } }) => {
-  const dispatch = useDispatch();
+const Ingredients = () => {
+    const dispatch = useDispatch();
 
-  // I was trying to map all ingredients for edit form.
-  const [state, setState] = useState(Object.keys(recipe));
-  const [amounts, setAmounts] = useState(Object.values(recipe));
+    // I was trying to map all ingredients for edit form.
+    // const [state, setState] = useState([]);
+    // const [amounts, setAmounts] = useState([]);
+    // const state = useSelector(getIngredientNames)
+    // const amounts = useSelector(getIngredientAmounts)
 
-  const addIngredient = () => {
-    setState([...state, ""]);
-    setAmount([...amounts, ""]);
-  };
+    const machineStatus = useSelector(getLocalStatus)
+    const possibleIngredients = machineStatus["startJars"].map(startJar => startJar["jarName"])
 
-  // Remove
-  const removeIngredient = (e, idx) => {
-    e.preventDefault();
-
-    var result = [];
-
-    for (let i = 0; i < state.length; i++) {
-      if (i !== idx) {
-        result.push(state[i]);
-      }
+    const selectedRecipe = useSelector(getRecipe)
+    let ingredientNameList = []
+    let ingredientValueList = []
+    if (selectedRecipe["ingredients"] !== null && selectedRecipe["ingredients"] !== undefined) {
+        ingredientNameList = Object.keys(selectedRecipe["ingredients"])
+        ingredientValueList = Object.values(selectedRecipe["ingredients"])
     }
 
-    setState(result);
-  };
+    // if(recipe){
+    //   setState(Object.keys(recipe))
+    //   setAmounts(Object.values(recipe))
+    // }
 
-  const removeAmount = (e, idx) => {
-    e.preventDefault();
+    const addIngredient = () => {
+        // setState([...state, ""]);
+        dispatch(selectRecipe({
+            ...selectedRecipe,
+            "ingredients": {
+                ...selectedRecipe["ingredients"],
+                "": 0
+            }
+        }))
+        // selectNames([...state, ""])
+        // setAmount([...amounts, ""]);
+    };
 
-    var result = [];
+    // Remove
 
-    for (let i = 0; i < state.length; i++) {
-      if (i !== idx) {
-        result.push(amounts[i]);
-      }
+    const removeIngredient = (e, idx) => {
+        e.preventDefault();
+
+        const result = [];
+
+        for (let i = 0; i < ingredientNameList.length; i++) {
+            if (i !== idx) {
+                result.push(selectedRecipe["ingredients"][ingredientNameList[i]]);
+            }
+        }
+        dispatch(selectRecipe({
+            ...selectedRecipe,
+            "ingredients": {
+                ...Object.fromEntries(result)
+            }
+        }))
+        // selectAmounts(result)
+        // setAmounts(result);
     }
 
-    setAmounts(result);
-  }
+    const setIngredient = (idx, name, value) => {
+        const result = [];
 
-  const setIngredient = (idx, value) => {
-    let temp = state;
-    temp[idx] = value;
-    setState(temp);
-    dispatch(selectNames(state));
-  };
+        for (let i = 0; i < ingredientNameList.length; i++) {
+            if (i !== idx) {
+                result.push([
+                    ingredientNameList[i], ingredientValueList[i]
+                ]);
+            } else {
+                result.push([
+                    name, value
+                ])
+            }
+        }
+        console.log("RESULT:", selectedRecipe["ingredients"])
+        dispatch(selectRecipe({
+            ...selectedRecipe,
+            "ingredients": {
+                ...Object.fromEntries(result)
+            }
+        }))
+        // let temp = state;
+        // temp[idx] = value;
+        // // setState(temp);
+        // selectNames(temp)
+    };
 
-  const setAmount = (idx, value) => {
-    let temp = amounts;
-    temp[idx] = value;
-    setAmounts(temp);
-    dispatch(selectAmounts(amounts));
-  };
-
-  return (
-    <div className="ingredient-container">
-      {state.map((el, index) => {
-        // console.log("Does it work?", state[index]);
-        console.log("Current State: ", state);
-        console.log("Current Amounts=== ", amounts);
-        return (
-          <IngredientInput
-            setIngredient={setIngredient}
-            setAmount={setAmount}
-            index={index}
-            removeIngredient={removeIngredient}
-            removeAmount={removeAmount}
-            ingredientNameValue={state[index]}
-            ingredientAmountValue={amounts[index]}
-          />
-        );
-      })}
-      <button
-        className="add-ingredient"
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          addIngredient();
-        }}
-      >
-        +
-      </button>
-    </div>
-  );
+    return (
+        <div className="ingredient-container">
+            {ingredientNameList.map((el, index) => {
+                // console.log("Does it work?", state[index]);
+                // console.log("Current State: ", state);
+                // console.log("Current Amounts=== ", amounts);
+                return (
+                    <IngredientInput
+                        setIngredient={setIngredient}
+                        index={index}
+                        removeIngredient={removeIngredient}
+                        ingredientNameValue={ingredientNameList[index]}
+                        ingredientAmountValue={ingredientValueList[index]}
+                        possibleIngredients={possibleIngredients}
+                    />
+                );
+            })}
+            <button
+                className="add-ingredient"
+                type="button"
+                onClick={(e) => {
+                    e.preventDefault();
+                    addIngredient();
+                }}
+            >
+                +
+            </button>
+        </div>
+    );
 };
 
 export default Ingredients;

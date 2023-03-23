@@ -11,14 +11,14 @@ export function selectJar(jar) {
     return {type: SELECT_JAR, jar};
 }
 
-export function selectNames(names) {
-    return {type: SELECT_INGRE_NAME, names};
-}
+// export function selectNames(names) {
+//     return {type: SELECT_INGRE_NAME, names};
+// }
+//
+// export function selectAmounts(amounts) {
+//     return {type: SELECT_AMOUNTS, amounts};
+// }
 
-export function selectAmounts(amounts) {
-    return {type: SELECT_AMOUNTS, amounts};
-}
-
-export function setRecipeList(recipeList){
+export function setRecipeList(recipeList) {
     return {type: "UPDATE_RECIPE_LIST", recipeList}
 }

@@ -33,7 +33,7 @@ const AboutFancy = ({lang}) => {
                 fillMode="none"
             >
                 {lang === "kr" && ("Bioreactor는 raspberry pi 머신을 조종하기 위해 만들어진, socket.io를 이용한 " +
-                                    "웹 어플리케이션입니다.")}
+                    "웹 어플리케이션입니다.")}
                 {lang !== "kr" && ("Bioreactor is a web application that can handle a raspberry pi machine\n" +
                     "                by using socket.io")}
             </MovingText>
@@ -78,7 +78,8 @@ const AboutFancy = ({lang}) => {
                 Imgyeong Lee &#40;Frontend&#41;
             </MovingText>
             {lang === "kr" && <div className="link-margin"><NavLink to="/about">영어로 이 페이지를 보기</NavLink></div>}
-            {lang !== "kr" && <div className="link-margin"><NavLink to="/about/kr">See this page in Korean</NavLink></div>}
+            {lang !== "kr" &&
+                <div className="link-margin"><NavLink to="/about/kr">See this page in Korean</NavLink></div>}
         </div>
     );
 };

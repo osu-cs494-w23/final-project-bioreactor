@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import MovingText from "react-moving-text";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import AboutFancy from "../components/AboutFancy";
 import handleViewport from "react-in-viewport";
 
 const About = () => {
     const [test, setTest] = useState(false);
-    const { lang } = useParams();
+    const {lang} = useParams();
     const Block = (props) => {
         const {inViewport, forwardedRef} = props;
         return <div className="viewport-block" ref={forwardedRef}></div>;

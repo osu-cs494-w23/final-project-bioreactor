@@ -26,6 +26,7 @@ let machine = {
 
 function getAllStatuses() {
     return {
+        "manual": states.manual,
         "finalJars": Array.from(machine["finalJars"], ([_, jar]) => jar.allStats),
         "startJars": Array.from(machine["startJars"], ([_, startJarPump]) => startJarPump.allStats),
         "coolantMotor": machine["coolantMotor"].allStats

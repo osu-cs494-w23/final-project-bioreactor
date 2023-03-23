@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {BsCheckCircleFill} from "react-icons/bs";
 import {TbTemperature} from "react-icons/tb";
 import {GiElectric} from "react-icons/gi";
 import ProgressPanel from "./ProgressPanel";
+import {socket} from "../context/socket";
+import {notifyBad, notifyGood} from "../notify";
 
 const ProgressJar = ({status, jar}) => {
     const StyledSpan = styled.span`
@@ -38,6 +40,23 @@ const ProgressJar = ({status, jar}) => {
                 </div>
                 <ProgressPanel jar={jar}/>
             </div>
+            <span className={"cancelBtn"}>
+          <button
+              type="button"
+              className="form-button cancel"
+              onClick={() => {
+                  socket.emit("cancelRecipe", jar.name, (data) => {
+                      if (data["status"] === "error") {
+                          notifyBad(data["errorMessage"])
+                      } else {
+                          notifyGood("Recipe for " + jar.name + " cancelled.")
+                      }
+                  })
+              }}
+          >
+            Cancel
+          </button>
+            </span>
         </>
     );
 };

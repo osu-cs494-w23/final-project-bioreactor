@@ -13,10 +13,12 @@ const StyledButton = styled.button`
   font-weight: bold;
   border: none;
   transition-duration: 0.3s;
+
   &:hover {
     background-color: #026661;
     color: white;
   }
+
   &:active {
     color: ${color.prettygray};
   }

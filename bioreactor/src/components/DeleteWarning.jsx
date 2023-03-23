@@ -1,25 +1,19 @@
 import React from "react";
 import {socket} from "../context/socket";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {notifyBad, notifyGood} from "../notify";
 
 const DeleteWarning = ({onClickHandler, setOnDelete, selectedRecipe}) => {
     const onClickRemoveHandler = () => {
-        socket.emit("removeRecipe", selectedRecipe.name)
-        notify();
-        setOnDelete(false);
+        socket.emit("removeRecipe", selectedRecipe.name, (data) => {
+            if (data["status"] === "error") {
+                notifyBad(data["errorMessage"])
+            } else {
+                notifyGood('Removing recipe went successful!')
+                setOnDelete(false);
+            }
+        })
     }
-
-    const notify = () => toast.success('Removing recipe went successful!', {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-    });
 
     return (
         <div className="warn-container">

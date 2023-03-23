@@ -3,9 +3,9 @@ import {FaShare} from "react-icons/fa";
 import {validNumber} from "../data/regex";
 import InvalidMessage from "./InvalidMessage";
 import {socket} from "../context/socket";
+import {notifyBad} from "../notify";
 
 const MotorPanel = ({device}) => {
-    const [value, Setvalue] = useState(0);
     const [onInvalid, SetOnInvalid] = useState(false);
 
     if (device === undefined)
@@ -35,14 +35,14 @@ const MotorPanel = ({device}) => {
         }
     };
 
-    function sendSpeedToSocket(newSpeed){
+    function sendSpeedToSocket(newSpeed) {
         let newSpeedNum = 0
-        if(typeof newSpeed === 'string')
+        if (typeof newSpeed === 'string')
             newSpeedNum = parseInt(newSpeed)
         socket.emit("setMotorSpeed", device.jarName, device.name, device.deviceGroup, newSpeedNum, (data) => {
-            if(data["status"] === "error"){
+            if (data["status"] === "error") {
                 console.log("sendSpeedToSocket error:", data["errorMessage"])
-                return
+                notifyBad(data["errorMessage"])
             }
         })
     }

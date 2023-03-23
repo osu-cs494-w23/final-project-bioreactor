@@ -171,12 +171,16 @@ function init(server) {
                     throw err
                 }
                 console.log("Recipe", newRecipe["name"], "has been saved");
+                callback({
+                    "status": "ok"
+                })
                 updateRecipeListFile(callback)
             })
         })
 
         socket.on('getRecipe', (recipeName, callback) => {
             callback = checkCallback(callback, socket.id, "getRecipe")
+            resetRecipeList()
             let returningRecipe = recipeList[recipeName]
             if (returningRecipe !== undefined && returningRecipe !== null) {
                 console.log("returning recipe:", returningRecipe)
@@ -189,6 +193,15 @@ function init(server) {
             callback({
                 "status": "error",
                 "errorMessage": "recipe not found"
+            })
+        })
+
+        socket.on('getRecipeList', (callback) => {
+            callback = checkCallback(callback, socket.id, "getRecipeList")
+            resetRecipeList()
+            callback({
+                "status": "ok",
+                "list": recipeList
             })
         })
 
@@ -210,14 +223,6 @@ function init(server) {
             callback({
                 "status": "error",
                 "errorMessage": "recipe not found"
-            })
-        })
-
-        socket.on('getRecipeList', (callback) => {
-            callback = checkCallback(callback, socket.id, "getRecipeList")
-            callback({
-                "status": "ok",
-                "list": recipeList
             })
         })
 
@@ -285,6 +290,13 @@ function init(server) {
                 callback({
                     "status": "error",
                     "errorMessage": "Jar not found"
+                })
+                return
+            }
+            if(states.manual){
+                callback({
+                    "status": "error",
+                    "errorMessage": "machine is in manual mode"
                 })
                 return
             }
@@ -380,12 +392,6 @@ function init(server) {
                 })
                 return
             }
-            if (currentJar.state !== "running") {
-                callback({
-                    "status": "error",
-                    "errorMessage": "Recipe not running"
-                })
-            }
             currentJar.cancelRecipe()
             callback({
                 "status": "ok"
@@ -430,9 +436,9 @@ function checkCallback(callback, socketID, functionName) {
 }
 
 function resetRecipeList() {
-    recipeList = Object.fromEntries(require("./recipes/recipeList.json").map(fileName => {
+    recipeList = Object.fromEntries(JSON.parse(fs.readFileSync("./recipes/recipeList.json").toString()).map(fileName => {
         if(fs.existsSync("./recipes/" + fileName + ".json")) {
-            let recipe = require("./recipes/" + fileName)
+            let recipe = JSON.parse(fs.readFileSync("./recipes/" + fileName + ".json").toString())
             return [recipe.name, recipe]
         } else {
             console.log("recipe file not found:", "./recipes/" + fileName + ".json")
