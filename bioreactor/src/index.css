@@ -693,14 +693,11 @@ a {
 }
 
 .wide-ingredient-input {
-    font-size: 1.1em;
-    font-family: "Inter", sans-serif;
     padding: 0.5em 0.8em;
     border: 2px solid #dee1e1;
     border-radius: 0.5em;
     outline: none;
     width: 15em;
-    height: 1.2em;
     margin-bottom: 0.3em;
     margin: 0.2em;
 }

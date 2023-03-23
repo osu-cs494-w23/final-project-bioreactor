@@ -46,7 +46,7 @@ const IngredientInput = ({
         <>
             <div className="ingredient-input-container">
                 <div className="order-box">{index + 1}</div>
-                <select value={nameValue} onChange={onChangeHandler} required={true}>
+                <select value={nameValue} onChange={onChangeHandler} required={true} className="wide-ingredient-input">
                     {possibleIngredients.map(ingredient => {
                         return <option key={ingredient} value={ingredient}>{ingredient}</option>
                     })}
