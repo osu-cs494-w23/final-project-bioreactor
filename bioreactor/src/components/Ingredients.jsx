@@ -94,9 +94,7 @@ const Ingredients = () => {
     return (
         <div className="ingredient-container">
             {ingredientNameList.map((el, index) => {
-                // console.log("Does it work?", state[index]);
-                // console.log("Current State: ", state);
-                // console.log("Current Amounts=== ", amounts);
+
                 return (
                     <IngredientInput
                         setIngredient={setIngredient}

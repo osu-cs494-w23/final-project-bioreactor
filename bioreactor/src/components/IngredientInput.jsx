@@ -51,15 +51,7 @@ const IngredientInput = ({
                         return <option key={ingredient} value={ingredient}>{ingredient}</option>
                     })}
                 </select>
-                {/*<input*/}
-                {/*  type="text"*/}
-                {/*  required*/}
-                {/*  name="ingredient"*/}
-                {/*  className="wide-ingredient-input"*/}
-                {/*  placeholder="Enter the ingredient name"*/}
-                {/*  onChange={onChangeHandler}*/}
-                {/*  value={nameValue}*/}
-                {/*/>*/}
+
                 <input
                     type="text"
                     required

@@ -41,21 +41,6 @@ const ProgressJar = ({status, jar}) => {
                 <ProgressPanel jar={jar}/>
             </div>
             <span className={"cancelBtn"}>
-          <button
-              type="button"
-              className="form-button cancel"
-              onClick={() => {
-                  socket.emit("cancelRecipe", jar.name, (data) => {
-                      if (data["status"] === "error") {
-                          notifyBad(data["errorMessage"])
-                      } else {
-                          notifyGood("Recipe for " + jar.name + " cancelled.")
-                      }
-                  })
-              }}
-          >
-            Cancel
-          </button>
             </span>
         </>
     );

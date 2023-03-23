@@ -6,6 +6,7 @@ import {socket} from "../context/socket";
 import "react-toastify/dist/ReactToastify.css";
 import {selectRecipe} from "../redux/actions";
 import {notifyBad, notifyGood} from "../notify";
+import {validNumber} from "../data/regex";
 
 const EditForm = ({setOnEdit}) => {
     const dispatch = useDispatch()
@@ -25,6 +26,14 @@ const EditForm = ({setOnEdit}) => {
             }
         });
     };
+
+    const testNumber = (test) => {
+        var num = 0
+        if (validNumber.test(test))
+            num = parseInt(test)
+
+        return num
+    }
 
     return (
         <>
@@ -57,7 +66,7 @@ const EditForm = ({setOnEdit}) => {
                             e.preventDefault();
                             dispatch(selectRecipe({
                                 ...selectedRecipe,
-                                time: parseInt(e.target.value)
+                                time: testNumber(e.target.value)
                             }))
                         }}
                     />
@@ -76,7 +85,7 @@ const EditForm = ({setOnEdit}) => {
                             e.preventDefault();
                             dispatch(selectRecipe({
                                 ...selectedRecipe,
-                                temperature: parseInt(e.target.value)
+                                temperature: testNumber(e.target.value)
                             }))
                         }}
                     />
@@ -95,7 +104,7 @@ const EditForm = ({setOnEdit}) => {
                             e.preventDefault();
                             dispatch(selectRecipe({
                                 ...selectedRecipe,
-                                motorSpeed: parseInt(e.target.value)
+                                motorSpeed: testNumber(e.target.value)
                             }))
                         }}
                     />

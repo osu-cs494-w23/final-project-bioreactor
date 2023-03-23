@@ -2,8 +2,11 @@ import React from "react";
 import {socket} from "../context/socket";
 import "react-toastify/dist/ReactToastify.css";
 import {notifyBad, notifyGood} from "../notify";
+import {selectRecipe} from "../redux/actions";
+import {useDispatch} from "react-redux";
 
 const DeleteWarning = ({onClickHandler, setOnDelete, selectedRecipe}) => {
+    const dispatch = useDispatch();
     const onClickRemoveHandler = () => {
         socket.emit("removeRecipe", selectedRecipe.name, (data) => {
             if (data["status"] === "error") {
@@ -11,6 +14,13 @@ const DeleteWarning = ({onClickHandler, setOnDelete, selectedRecipe}) => {
             } else {
                 setOnDelete(false);
                 notifyGood('Removing recipe went successful!')
+                dispatch(selectRecipe({
+                    name: "",
+                    time: undefined,
+                    motorSpeed: undefined,
+                    temperature: undefined,
+                    ingredients: undefined,
+                }))
             }
         })
     }

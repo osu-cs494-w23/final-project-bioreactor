@@ -12,7 +12,6 @@ import {getJarName, getRecipe} from "../redux/selectors";
 import {selectRecipe} from "../redux/actions";
 
 function Selection({socket}){
-    const dispatch = useDispatch
     const [onSummary, SetOnSummary] = useState(false);
     const [onAdd, setOnAdd] = useState(false);
     const [onEdit, setOnEdit] = useState(false);
@@ -64,7 +63,8 @@ function Selection({socket}){
             )}
             {onDelete && (
                 <>
-                    <DeleteWarning onClickHandler={onDeleteHandler}/>
+                    <DeleteWarning onClickHandler={onDeleteHandler} setOnDelete={setOnDelete}
+                                   selectedRecipe={selectedRecipe}/>
                     <div className="backscreen"></div>
                 </>
             )}

@@ -5,7 +5,7 @@ import HashLoader from "react-spinners/HashLoader";
 import MovingText from "react-moving-text";
 import {socket} from "../context/socket";
 import ToggleButton from "./ToggleButton";
-import {notifyBad} from "../notify";
+import {notifyBad, notifyGood} from "../notify";
 
 const ProgressPanel = ({jar}) => {
 
@@ -194,9 +194,27 @@ const ProgressPanel = ({jar}) => {
                             })
                         }
                         }>Restart</ToggleButton>
+
                     </div>
                 </>
             )}
+
+            <button
+                type="button"
+                className="form-button cancel"
+                onClick={() => {
+                    socket.emit("cancelRecipe", jar.name, (data) => {
+                        if (data["status"] === "error") {
+                            notifyBad(data["errorMessage"])
+                        } else {
+                            notifyGood("Recipe for " + jar.name + " cancelled.")
+                        }
+                    })
+                }}
+            >
+                Cancel
+            </button>
+
         </div>
     );
 };
