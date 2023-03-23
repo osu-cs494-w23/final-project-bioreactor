@@ -10,6 +10,8 @@ const Manual = () => {
     const deviceStatus = useSelector(getLocalStatus);
     const [manualState, setManualState] = useState(false)
 
+    console.log("MASAKA...", deviceStatus)
+
     useEffect(()=>{
         if(socket !== undefined)
         socket.emit("getManual", (data) => {

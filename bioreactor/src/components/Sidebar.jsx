@@ -1,34 +1,32 @@
 import React, {useState, useEffect} from "react";
-import datas from "../data/sample.json";
 import {FaSearch} from "react-icons/fa";
 import {useDispatch} from "react-redux";
 import {selectRecipe} from "../redux/actions";
 import {socket} from "../context/socket";
 
-const Sidebar = ({onClickHandler}) => {
-    const initialData = datas;
-
-    const initialTestData = []
+const Sidebar = ({onClickHandler, recipes}) => {
     const dispatch = useDispatch();
-    const [result, setResult] = useState(initialTestData)
+    const [result, setResult] = useState([])
+    const [initialData, setInitialData] = useState([])
 
     console.log("Socket is", socket)
 
     useEffect(()=>{
-        if(socket !== undefined)
+        if(socket !== undefined) {
             socket.emit("getRecipeList", (data) => {
-                if(data["status"] === "error"){
+                if (data["status"] === "error") {
                     console.log("getManual error:", data["errorMessage"])
                     return
                 }
-                if(data["list"] === {}) {
-                    setResult([])
-                }
-                else {
-                    setResult(Object.values(data["list"]))
+                if (data["list"] === {}) {
+                    setInitialData([])
+                } else {
+                    setInitialData(Object.values(data["list"]))
+                    //setResult(initialData)
                 }
             })
-    }, [socket, initialTestData])
+        }
+    }, [initialData])
 
     const onChangeHandler = (e) => {
         e.preventDefault()
@@ -36,11 +34,8 @@ const Sidebar = ({onClickHandler}) => {
             setResult(initialData)
             return
         }
-        console.log("HERE!!!")
-        setResult(initialData.filter(data => data.name.includes(e.target.value)))
+        setResult(initialData.filter(data => data.name.toLowerCase().includes(e.target.value)))
     }
-
-    console.log("Result is ", result)
 
     return (
         <div className="sidebar">

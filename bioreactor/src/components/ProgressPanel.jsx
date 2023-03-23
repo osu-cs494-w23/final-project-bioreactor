@@ -11,7 +11,7 @@ const ProgressPanel = ({jar}) => {
 
     return (
         <>
-            {jar.state == "idle" && !incubateReady && (
+            {jar.state === "idle" && (
                 <div>
                     <MovingText
                         className="progress-text"
@@ -23,7 +23,7 @@ const ProgressPanel = ({jar}) => {
                         iteration="1"
                         fillMode="none"
                     >
-                        Please wait for incubating the jar
+                        Start incubating your jar
                     </MovingText>
                     <button
                         style={{"margin-top": "2em"}}
@@ -37,7 +37,7 @@ const ProgressPanel = ({jar}) => {
                     </button>
                 </div>
             )}
-            {jar.state == "idle" && incubateReady && (
+            {jar.state === "incubationPrep" && !jar.incubateReady && (
                 <div>
                     <MovingText
                         className="progress-text"
@@ -49,19 +49,38 @@ const ProgressPanel = ({jar}) => {
                         iteration="1"
                         fillMode="none"
                     >
-                        Ready to start
+                        Preparing your incubation...
+                    </MovingText>
+                    <ClimbingBoxLoader color="#FFBC00" size={25}/>
+                </div>
+            )}
+            {jar.state === "incubationPrep" && jar.incubateReady && (
+                <div>
+                    <MovingText
+                        className="progress-text"
+                        type="fadeInFromBottom"
+                        duration="1000ms"
+                        delay="0s"
+                        direction="normal"
+                        timing="ease"
+                        iteration="1"
+                        fillMode="none"
+                    >
+                        Press to start
                     </MovingText>
                     <button
                         style={{"margin-top": "2em"}}
                         onClick={() => {
-                            setText("running");
+                            socket.emit("startRecipe", jar.name, () => {
+                                setText(jar.state)
+                            })
                         }}
                     >
                         Start
                     </button>
                 </div>
             )}
-            {jar.state == "running" && (
+            {jar.state === "running" && (
                 <div>
                     <MovingText
                         className="progress-text"
@@ -78,7 +97,7 @@ const ProgressPanel = ({jar}) => {
                     <ClimbingBoxLoader color="#FFBC00" size={25}/>
                 </div>
             )}
-            {jar.state == "paused" && (
+            {jar.state === "paused" && (
                 <div>
                     PAUSED
                     <button>Restart</button>
