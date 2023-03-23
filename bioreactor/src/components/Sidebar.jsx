@@ -60,7 +60,15 @@ const Sidebar = ({onAddRecipe}) => {
                 }))}
 
             </div>
-            <button className="add-button" onClick={onAddRecipe}>
+            <button className="add-button" onClick={()=>{
+                onAddRecipe()
+                dispatch(selectRecipe({
+                    name: "",
+                    time: undefined,
+                    motorSpeed: undefined,
+                    temperature: undefined,
+                    ingredients: undefined,
+                }))}}>
                 + Add Recipe
             </button>
         </div>

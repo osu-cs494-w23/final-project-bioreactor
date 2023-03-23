@@ -9,8 +9,8 @@ const DeleteWarning = ({onClickHandler, setOnDelete, selectedRecipe}) => {
             if (data["status"] === "error") {
                 notifyBad(data["errorMessage"])
             } else {
-                notifyGood('Removing recipe went successful!')
                 setOnDelete(false);
+                notifyGood('Removing recipe went successful!')
             }
         })
     }

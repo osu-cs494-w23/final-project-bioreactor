@@ -11,7 +11,7 @@ import {getRecipe} from "../redux/selectors";
 import {socket} from "../context/socket";
 import {selectRecipe} from "../redux/actions";
 
-const Manage = () => {
+function Manage(){
     const dispatch = useDispatch()
     const [onAdd, setOnAdd] = useState(false);
     const [onEdit, setOnEdit] = useState(false);

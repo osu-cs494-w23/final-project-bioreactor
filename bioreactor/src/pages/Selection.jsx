@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getJarName, getRecipe} from "../redux/selectors";
 import {selectRecipe} from "../redux/actions";
 
-const Selection = ({socket}) => {
+function Selection({socket}){
     const dispatch = useDispatch
     const [onSummary, SetOnSummary] = useState(false);
     const [onAdd, setOnAdd] = useState(false);
@@ -20,13 +20,6 @@ const Selection = ({socket}) => {
 
     const onAddRecipe = () => {
         setOnAdd(!onAdd);
-        dispatch(selectRecipe({
-            name: "",
-            time: undefined,
-            motorSpeed: undefined,
-            temperature: undefined,
-            ingredients: undefined,
-        }))
     };
     const onEditHandler = () => {
         setOnEdit(!onEdit);
@@ -59,7 +52,7 @@ const Selection = ({socket}) => {
             )}
             {onAdd && (
                 <>
-                    <AddForm onCancelHandler={setOnAdd}/>
+                    <AddForm setOnAdd={setOnAdd}/>
                     <div className="backscreen"></div>
                 </>
             )}

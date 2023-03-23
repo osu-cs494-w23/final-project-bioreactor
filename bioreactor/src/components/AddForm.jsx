@@ -18,8 +18,8 @@ const AddForm = ({setOnAdd}) => {
             if (data["status"] === "error") {
                 notifyBad(data["errorMessage"])
             } else {
-                notifyGood("Recipe " + selectedRecipe.name + " added!")
                 setOnAdd(false);
+                notifyGood("Recipe " + selectedRecipe.name + " added!")
             }
         })
     };

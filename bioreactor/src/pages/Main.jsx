@@ -25,7 +25,7 @@ const Main = () => {
                         if (data["status"] === "error") {
                             notifyBad(jar.name + ": ", data["errorMessage"])
                         } else {
-                            notifyGood("Stopped all jars")
+                            notifyGood("Stopped jar " + jar.name)
                         }
                     })
                 })

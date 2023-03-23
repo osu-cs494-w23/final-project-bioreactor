@@ -20,8 +20,8 @@ const EditForm = ({setOnEdit}) => {
             if (data["status"] === "error") {
                 notifyBad(data["errorMessage"])
             } else {
-                notifyGood("Editing recipe went successful!")
                 setOnEdit(false)
+                notifyGood("Editing recipe went successful!")
             }
         });
     };
