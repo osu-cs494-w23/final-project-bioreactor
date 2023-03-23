@@ -1,7 +1,5 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import color from "../data/color.json";
-import ToggleButton from "./ToggleButton";
 import {BsCheckCircleFill} from "react-icons/bs";
 import {TbTemperature} from "react-icons/tb";
 import {GiElectric} from "react-icons/gi";
@@ -21,12 +19,6 @@ const ProgressJar = ({status, jar}) => {
       font-size: 1.1em;
     `;
 
-    const [onDetail, setOnDetail] = useState(false);
-    const [onManual, setonManual] = useState(true);
-    const toggle = () => setOnDetail(!onDetail);
-
-    console.log("NEW JAR: ", jar);
-
     return (
         <>
             <div className="on-recipe jar">
@@ -45,14 +37,6 @@ const ProgressJar = ({status, jar}) => {
           </span>
                 </div>
                 <ProgressPanel jar={jar}/>
-                <ToggleButton className="togglebutton" onClick={toggle}>
-                    {onDetail ? "Hide" : "Details"}
-                </ToggleButton>
-                {onDetail && (
-                    <div className="detail-container">
-                        <li>Hello</li>
-                    </div>
-                )}
             </div>
         </>
     );

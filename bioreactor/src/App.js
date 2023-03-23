@@ -27,6 +27,7 @@ function App() {
                         element={<Manage socket={socket}/>}
                     ></Route>
                     <Route path="/about" element={<About/>}/>
+                    <Route path="/about/:lang" element={<About />}/>
                     <Route path="/load" element={<Selection socket={socket}/>}/>
                     <Route
                         path="/manual/load"

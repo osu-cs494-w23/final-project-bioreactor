@@ -41,8 +41,8 @@ const RecipePanel = ({onClickEdit, onClickDelete}) => {
                     <div className="card big">
                         <div className="bold card-subject">Required ingredient</div>
                         <ul className="card-value list">
-                            {ingredients.map((igd) => {
-                                return <li>{igd}</li>;
+                            {ingredients.map((igd, idx) => {
+                                return <li className="ingredient-list" key={igd}><div className="number">{idx + 1}</div><div>{igd}</div><div>{amounts[idx]} ml</div></li>;
                             })}
                         </ul>
                     </div>

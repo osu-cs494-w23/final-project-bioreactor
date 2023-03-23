@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { getRecipe } from "../redux/selectors";
+import React, { useState } from "react";
+import {useSelector} from "react-redux";
+import {getRecipe} from "../redux/selectors";
 import Ingredients from "./Ingredients";
 import {socket} from "../context/socket";
 import { getIngredientAmounts, getIngredientNames } from "../redux/selectors";
@@ -49,14 +49,12 @@ const EditForm = ({ onClickHandler, setOnEdit }) => {
     theme: "light",
   });
 
-  useEffect(() => {
-    console.log("selected recipe changed:", selectedRecipe);
-  }, [selectedRecipe]);
 
   const [name, setName] = useState(selectedRecipe.name);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    const name = selectedRecipe.name
     const finalIngredients = arrayToObject(ingredientNames, ingredientAmounts);
     formValue.ingredients = finalIngredients;
     console.log(formValue);

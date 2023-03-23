@@ -10,7 +10,6 @@ const Sidebar = ({onClickHandler, recipes, socket}) => {
     const recipeList = useSelector(getRecipeList)
     const [result, setResult] = useState([])
     const [filterText, setFilterText] = useState("")
-    // const [initialData, setInitialData] = useState([])
 
     useEffect(()=>{
         let recipeListToValues = Object.values(recipeList)
@@ -21,45 +20,6 @@ const Sidebar = ({onClickHandler, recipes, socket}) => {
         }
         setResult(recipeListToValues.filter(data => data.name.toLowerCase().includes(filterText)))
     }, [filterText, recipeList])
-
-    // useEffect(()=>{
-    //     console.log("usingEffect")
-    //     let interval = setInterval(()=>{
-    //         if(socket !== undefined) {
-    //             socket.emit("getRecipeList", (data) => {
-    //                 console.log("recipeList returned:", data)
-    //                 if (data["status"] === "error") {
-    //                     console.log("getManual error:", data["errorMessage"])
-    //                     return
-    //                 }
-    //                 if (data["list"] === {}) {
-    //                     setInitialData([])
-    //                 } else {
-    //                     console.log("setting that data")
-    //                     setInitialData(Object.values(data["list"]))
-    //                 }
-    //             })
-    //         }
-    //     })
-    // }, [])
-
-    // useEffect(()=>{
-    //     console.log("usingEffect")
-    //     if(socket !== undefined) {
-    //         socket.emit("getRecipeList", (data) => {
-    //             if (data["status"] === "error") {
-    //                 console.log("getManual error:", data["errorMessage"])
-    //                 return
-    //             }
-    //             if (data["list"] === {}) {
-    //                 setInitialData([])
-    //             } else {
-    //                 setInitialData(Object.values(data["list"]))
-    //                 //setResult(initialData)
-    //             }
-    //         })
-    //     }
-    // }, [initialData])
 
     const onChangeHandler = (e) => {
         console.log("onChange")

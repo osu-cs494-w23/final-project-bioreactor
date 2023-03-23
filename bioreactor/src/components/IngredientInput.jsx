@@ -7,6 +7,7 @@ const IngredientInput = ({
   setIngredient,
   index,
   removeIngredient,
+    removeAmount,
   ingredientNameValue = "",
   ingredientAmountValue = "",
 }) => {
@@ -38,6 +39,7 @@ const IngredientInput = ({
 
   const onRemoveHandler = (e) => {
     removeIngredient(e, index);
+    removeAmount(e, index);
   };
 
   return (
@@ -62,7 +64,7 @@ const IngredientInput = ({
           onChange={handleChange}
           value={amountValue}
         />
-        <button onClick={onRemoveHandler}>Remove</button>
+        <button onClick={onRemoveHandler} className="remove-button">Remove</button>
       </div>
       {onInvalid && <InvalidMessage />}
     </>

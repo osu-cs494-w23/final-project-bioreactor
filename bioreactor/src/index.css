@@ -173,6 +173,70 @@ a {
     align-items: center;
 }
 
+.inline-flex-container {
+    display: inline-flex;
+}
+
+.engage-button {
+    position: fixed;
+    z-index: 501;
+    bottom: 1em;
+    right: 1em;
+    padding: 1em;
+    font-size: 1.1em;
+    background-color: #c63434;
+    color: white;
+    font-weight: bold;
+    border-radius: 1em;
+    border: none;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition-duration: 0.1s;
+}
+
+.engage-button:hover {
+    background-color: #f35959;
+}
+
+.engage-button:active {
+    background-color: #f36161;
+}
+
+.warning-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 501;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    user-select: none;
+}
+
+.ingredient-list {
+    background-color: #f7f8f8;
+    border: 2px solid #F3F4F4;
+    margin: 1em;
+    display: grid;
+    grid-template-columns: 2em auto auto;
+    text-align: center;
+    padding: 0.8em;
+    border-radius: 0.5em;
+    color: #002838;
+}
+
+.number {
+    background-color: #002838;
+    color: #F3F4F4;
+    text-align: center;
+    justify-content: center;
+}
+
+.link-margin {
+    margin-top: 2em;
+}
+
 .add-button {
     position: fixed;
     cursor: pointer;
@@ -183,6 +247,50 @@ a {
     border-radius: 0.5em;
     margin-left: 4em;
     transition-duration: 0.2s;
+    bottom: 1em;
+}
+
+.remove-button {
+    font-size: 1em;
+    padding: 0.5em 0.8em;
+    border: 2px solid #dee1e1;
+    border-radius: 0.5em;
+    margin-bottom: 0.3em;
+    margin: 0.2em;
+    text-align: center;
+    background-color: #C63434;
+    transition-duration: 0.2s;
+    color: white;
+    cursor: pointer;
+}
+
+.progress-container {
+    justify-content: center;
+    margin: auto;
+    margin-top: 2em;
+}
+
+.progress-panel {
+    border: 2px solid #F3F4F4;
+    background-color: #f9fafa;
+    border-radius: 0.5em;
+    margin: auto;
+    padding: 2em;
+}
+
+.progress-button {
+    margin-top: 2em;
+}
+
+.loading-bar {
+    margin: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.remove-button:hover {
+    background-color: #ee4343;
+    color: white;
 }
 
 .add-button:hover {
@@ -222,6 +330,11 @@ a {
     padding: 0;
 }
 
+.regular {
+    font-weight: normal;
+    color: #002838;
+}
+
 .recipe-panel {
     grid-column-start: 2;
     grid-column-end: 3;
@@ -253,6 +366,7 @@ a {
     display: flex;
     justify-content: center;
     margin-bottom: 5em;
+    user-select: none;
 }
 
 .button-container {
@@ -295,6 +409,15 @@ a {
 
 .big .list {
     text-align: left;
+}
+
+.card-value li {
+    list-style-type: none;
+}
+
+.card ul {
+    margin: 0;
+    padding: 0;
 }
 
 .load-button {
@@ -678,10 +801,11 @@ a {
 }
 
 .manual-container {
-    display: flex;
+    display: grid;
     justify-content: center;
-    flex-wrap: wrap;
-    margin: auto;
+    /* flex-wrap: wrap; */
+    /* margin: auto; */
+    grid-template-columns: auto auto;
 }
 
 .ingredient {
@@ -845,6 +969,35 @@ a {
     font-weight: bold;
     font-size: 1.2em;
     justify-content: space-between;
+}
+
+.valve-button {
+    margin-left: 0.5em;
+    border-radius: 0.5em;
+    border: none;
+    background-color: #002838;
+    color: white;
+    padding: 0.3em 0.8em;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+.valve-button:hover {
+    margin-left: 0.5em;
+    border-radius: 0.5em;
+    border: none;
+    background-color: #dee1e1;
+    color: #002838;
+}
+
+
+.unable-screen {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    opacity: 0.5;
+    z-index: 500;
 }
 
 #motor-manual-input {

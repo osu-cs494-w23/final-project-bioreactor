@@ -6,7 +6,7 @@ const ValveControl = ({valve}) => {
     return (
         <li className="valve-li">
             {valve.name} &#40;{valve.jarName}&#41;
-            <button
+            <button className="valve-button"
                 onClick={(e) => {
                     e.preventDefault();
                     console.log(valve)

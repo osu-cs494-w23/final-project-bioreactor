@@ -10,8 +10,6 @@ const Manual = () => {
     const deviceStatus = useSelector(getLocalStatus);
     const [manualState, setManualState] = useState(false)
 
-    console.log("MASAKA...", deviceStatus)
-
     useEffect(()=>{
         if(socket !== undefined)
         socket.emit("getManual", (data) => {
@@ -44,8 +42,10 @@ const Manual = () => {
 
     return (
         <>
+            {!manualState && (<><div className="warning-text">Please make sure all jars are empty.</div>
+                <div className="unable-screen "></div></>)}
             <div className="manual-container">
-                <button onClick={handleManualToggle}>{manualState ? "Disengage manual mode" : "Engage manual mode"}</button>
+                <button className="engage-button" onClick={handleManualToggle}>{manualState ? "Disengage manual mode" : "Engage manual mode"}</button>
                 <div>
                     <h1 className="control-topic">Ingredients</h1>
                     <div className="ingredient">
@@ -62,17 +62,21 @@ const Manual = () => {
                 <div>
                     <h1 className="control-topic">Cool water bucket</h1>
                     <section className="control-panel-card">
+                        <div className="control-subject">Cool water</div>
                         <MotorPanel device={deviceStatus.coolantMotor}/>
                     </section>
                 </div>
                 <div>
                     <h1 className="control-topic">Jars</h1>
-                    {deviceStatus.finalJars.map(jar =>
-                        <section className="control-panel-card">
-                            <MotorPanel device={jar.impellerMotor}/>
-                            <ValvePanel valves={[...jar.valves, jar.tempValve]}/>
-                        </section>
-                    )}
+                    <section className="inline-flex-container">
+                        {deviceStatus.finalJars.map(jar =>
+                            <div className="control-panel-card">
+                                <MotorPanel device={jar.impellerMotor}/>
+                                <ValvePanel valves={[...jar.valves, jar.tempValve]}/>
+                            </div>
+                        )}
+                    </section>
+
                 </div>
             </div>
         </>

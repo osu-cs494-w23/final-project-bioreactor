@@ -11,7 +11,10 @@ const Jar = ({jar}) => {
     return (
         <>
             {!jar.recipe && <EmptyJar jarName={jar.name}/>}
-            {jar.recipe && <ProgressJar status={color.success} jar={jar}/>}
+            {jar.recipe && jar.state === "idle" && <ProgressJar status={"#273333"} jar={jar}/>}
+            {jar.recipe && jar.state === "incubationPrep" && <ProgressJar status={color.success} jar={jar}/>}
+            {jar.recipe && jar.state === "paused" && <ProgressJar status={color.loading} jar={jar}/>}
+            {jar.recipe && jar.state === "running" && <ProgressJar status={color.success} jar={jar}/>}
         </>
     );
 };

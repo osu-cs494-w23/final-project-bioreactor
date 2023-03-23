@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import MovingText from "react-moving-text";
+import { useParams } from "react-router-dom";
 import AboutFancy from "../components/AboutFancy";
 import handleViewport from "react-in-viewport";
 
 const About = () => {
     const [test, setTest] = useState(false);
+    const { lang } = useParams();
     const Block = (props) => {
         const {inViewport, forwardedRef} = props;
         return <div className="viewport-block" ref={forwardedRef}></div>;
@@ -47,13 +49,14 @@ const About = () => {
                             iteration="1"
                             fillMode="none"
                         >
-                            : MAKE YOUR LIFE EASIER
+                            {lang === "kr" && (": 더욱 편한 삶을 위해")}
+                            {lang !== "kr" && (": MAKE YOUR LIFE EASIER")}
                         </MovingText>
                     </div>
                 </div>
             </div>
             <Component/>
-            {test && <AboutFancy/>}
+            {test && <AboutFancy lang={lang}/>}
         </div>
     );
 };

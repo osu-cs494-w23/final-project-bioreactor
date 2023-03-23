@@ -28,8 +28,21 @@ const Ingredients = ({ recipe = { "": "" } }) => {
     }
 
     setState(result);
-    console.log("Triggered!");
   };
+
+  const removeAmount = (e, idx) => {
+    e.preventDefault();
+
+    var result = [];
+
+    for (let i = 0; i < state.length; i++) {
+      if (i !== idx) {
+        result.push(amounts[i]);
+      }
+    }
+
+    setAmounts(result);
+  }
 
   const setIngredient = (idx, value) => {
     let temp = state;
@@ -57,6 +70,7 @@ const Ingredients = ({ recipe = { "": "" } }) => {
             setAmount={setAmount}
             index={index}
             removeIngredient={removeIngredient}
+            removeAmount={removeAmount}
             ingredientNameValue={state[index]}
             ingredientAmountValue={amounts[index]}
           />

@@ -1,18 +1,22 @@
 import React, {useState} from "react";
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import BounceLoader from "react-spinners/BounceLoader";
+import HashLoader from "react-spinners/HashLoader";
 import MovingText from "react-moving-text";
 import {socket} from "../context/socket";
+import ToggleButton from "./ToggleButton";
 
 const ProgressPanel = ({jar}) => {
     const [text, setText] = useState(jar.state);
-    const [incubateReady, setIncubateReady] = useState(jar.incubateReady);
-    console.log("ProgressPanel jar", jar)
-    console.log("PrograssPanel state is ", jar.state)
+
+    const override = {
+        margin: "auto"
+    };
 
     return (
-        <>
+        <div className="progress-container">
             {jar.state === "idle" && (
-                <div>
+                <div className="progress-panel">
                     <MovingText
                         className="progress-text"
                         type="fadeInFromBottom"
@@ -25,20 +29,20 @@ const ProgressPanel = ({jar}) => {
                     >
                         Start incubating your jar
                     </MovingText>
-                    <button
-                        style={{"margin-top": "2em"}}
+                    <ToggleButton
+                        className="progress-button"
                         onClick={() => {
                             socket.emit("startIncubationPrep", jar.name, () => {
-                                setText(jar.state)
+                                console.log("TEST")
                             })
                         }}
                     >
-                        Start incubating
-                    </button>
+                        Start incubation
+                    </ToggleButton>
                 </div>
             )}
             {jar.state === "incubationPrep" && !jar.incubateReady && (
-                <div>
+                <div className="progress-panel">
                     <MovingText
                         className="progress-text"
                         type="fadeInFromBottom"
@@ -51,11 +55,7 @@ const ProgressPanel = ({jar}) => {
                     >
                         Preparing your incubation...
                     </MovingText>
-                    <ClimbingBoxLoader color="#FFBC00" size={25}/>
-                </div>
-            )}
-            {jar.state === "incubationPrep" && jar.incubateReady && (
-                <div>
+
                     <MovingText
                         className="progress-text"
                         type="fadeInFromBottom"
@@ -66,22 +66,78 @@ const ProgressPanel = ({jar}) => {
                         iteration="1"
                         fillMode="none"
                     >
-                        Press to start
+                        Required Temp: {jar.recipe.temperature} °F
                     </MovingText>
-                    <button
-                        style={{"margin-top": "2em"}}
+                    <div className="loading-bar"><ClimbingBoxLoader color="#59CB59" cssOverride={override} size={25}/></div>
+                    {!jar.incubateReady && jar.cooling && <MovingText
+                        className="progress-text"
+                        type="fadeInFromBottom"
+                        duration="1000ms"
+                        delay="0s"
+                        direction="normal"
+                        timing="ease"
+                        iteration="1"
+                        fillMode="none"
+                    >
+                        The temperature is too high.<br />
+                        Cooling this jar is in progress...
+                    </MovingText>}
+                    {!jar.incubateReady && !jar.cooling && <MovingText
+                        className="progress-text"
+                        type="fadeInFromBottom"
+                        duration="1000ms"
+                        delay="0s"
+                        direction="normal"
+                        timing="ease"
+                        iteration="1"
+                        fillMode="none"
+                    >
+                        The temperature is too low.<br />
+                        Heating this jar is in progress...
+                    </MovingText>}
+                </div>
+            )}
+            {jar.state === "incubationPrep" && jar.incubateReady && (
+                <div className="progress-panel">
+                    <MovingText
+                        className="progress-text"
+                        type="fadeInFromBottom"
+                        duration="1000ms"
+                        delay="0s"
+                        direction="normal"
+                        timing="ease"
+                        iteration="1"
+                        fillMode="none"
+                    >
+                        Incubation is done!
+                    </MovingText>
+                    <MovingText
+                        className="progress-text"
+                        type="fadeInFromBottom"
+                        duration="1000ms"
+                        delay="0s"
+                        direction="normal"
+                        timing="ease"
+                        iteration="1"
+                        fillMode="none"
+                    >
+                        Press to start your Recipe
+                    </MovingText>
+                    <ToggleButton
+                        className="progress-button"
                         onClick={() => {
                             socket.emit("startRecipe", jar.name, () => {
                                 setText(jar.state)
+                                console.log("Hello?")
                             })
                         }}
                     >
                         Start
-                    </button>
+                    </ToggleButton>
                 </div>
             )}
             {jar.state === "running" && (
-                <div>
+                <div className="progress-panel">
                     <MovingText
                         className="progress-text"
                         type="fadeInFromBottom"
@@ -94,16 +150,36 @@ const ProgressPanel = ({jar}) => {
                     >
                         In progress...
                     </MovingText>
-                    <ClimbingBoxLoader color="#FFBC00" size={25}/>
+                    <div className="loading-bar"><HashLoader color="#59CB59" cssOverride={override} size={120}/></div>
+                    <ToggleButton
+                        className="progress-button"
+                        onClick={() => {
+                        socket.emit("pauseRecipe", jar.name)}
+                    }>Pause</ToggleButton>
                 </div>
             )}
             {jar.state === "paused" && (
-                <div>
-                    PAUSED
-                    <button>Restart</button>
+                <><div className="progress-panel">
+                    <MovingText
+                        className="progress-text"
+                        type="fadeInFromBottom"
+                        duration="1000ms"
+                        delay="0s"
+                        direction="normal"
+                        timing="ease"
+                        iteration="1"
+                        fillMode="none"
+                    >
+                        Paused
+                    </MovingText>
+                    <div className="loading-bar"><BounceLoader color="#FFBC00" cssOverride={override} size={100}/></div>
+                    <ToggleButton className="progress-button" onClick={() => {
+                        socket.emit("startRecipe", jar.name)}
+                    }>Restart</ToggleButton>
                 </div>
+                </>
             )}
-        </>
+        </div>
     );
 };
 
